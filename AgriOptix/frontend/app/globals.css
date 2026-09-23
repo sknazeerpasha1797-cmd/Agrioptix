@@ -487,3 +487,796 @@ button {
     height: 9%;
   }
 }
+
+/* =========================================================
+   SHELF-LIFE / PERISHABILITY PAGE
+   (app/farmer/perishability/page.tsx)
+
+   Every rule is scoped under .perishability-page so nothing
+   here can leak into other AgriOptix screens, and so the
+   legacy global `main`, `header` and `h1` element rules are
+   overridden only for this page.
+
+   Breakpoints (mobile-first):
+     base        Mobile   (9:16, ~320-599px)
+     >= 600px    Large phone / small tablet
+     >= 768px    Tablet
+     >= 1024px   Laptop
+     >= 1440px   Desktop (16:9)
+========================================================= */
+
+.perishability-page {
+  /* design tokens */
+  --pl-ink: #0b2a20;
+  --pl-green-500: #12a35f;
+  --pl-green-600: #0a8a4e;
+  --pl-green-700: #067a44;
+  --pl-low: #10a55e;
+  --pl-medium: #f5a10c;
+  --pl-high: #e5192d;
+  --pl-alert-bg: #fdeff1;
+  --pl-alert-border: #f7cfd5;
+  --pl-alert-ink: #e21d2f;
+  --pl-info-bg: #e9f6f3;
+  --pl-info-border: #d2ebe4;
+  --pl-info-ink: #0e6a87;
+  --pl-track-bg: #f3faf6;
+  --pl-track-border: #dbeee4;
+  --pl-divider: #d6e8de;
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+  color: var(--pl-ink);
+  font-family: "DM Sans", sans-serif;
+  background: linear-gradient(180deg, #f8fdfa 0%, #eaf7f0 55%, #e0f2e8 100%);
+  -webkit-text-size-adjust: 100%;
+}
+
+/* soft white wave behind the header */
+.perishability-page::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 auto 0;
+  height: clamp(90px, 20vw, 170px);
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 160' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1440V70C1240 128 1010 36 740 78C470 120 250 52 0 104Z' fill='%23ffffff' fill-opacity='.85'/%3E%3C/svg%3E")
+    center top / 100% 100% no-repeat;
+}
+
+/* ---------- Header ---------- */
+
+.perishability-page .perishability-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(14px, 3.4vw, 24px) clamp(16px, 4.6vw, 40px);
+}
+
+.perishability-brand {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 2.2vw, 12px);
+  min-width: 0;
+}
+
+.perishability-brand-mark {
+  position: relative;
+  flex: none;
+  display: block;
+  width: clamp(36px, 9.6vw, 52px);
+  height: clamp(34px, 9vw, 48px);
+}
+
+.perishability-page .brand-leaf {
+  position: absolute;
+  fill: currentColor;
+  stroke: none;
+}
+.perishability-page .brand-leaf path:last-child {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+.perishability-page .brand-leaf-back {
+  left: 0;
+  bottom: 0;
+  width: 62%;
+  height: 62%;
+  color: #3db56f;
+  transform: rotate(-8deg);
+}
+.perishability-page .brand-leaf-front {
+  right: 0;
+  top: 0;
+  width: 82%;
+  height: 82%;
+  color: var(--pl-green-600);
+}
+
+.perishability-brand-text {
+  font: 800 clamp(21px, 5.8vw, 30px) / 1 "Manrope", sans-serif;
+  letter-spacing: -0.03em;
+  color: var(--pl-ink);
+  white-space: nowrap;
+}
+
+.perishability-header-actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 3.4vw, 22px);
+  flex: none;
+}
+
+.perishability-page .header-bell {
+  width: clamp(20px, 5.2vw, 27px);
+  height: clamp(20px, 5.2vw, 27px);
+  color: #123a2b;
+}
+
+.perishability-avatar {
+  display: grid;
+  place-items: center;
+  width: clamp(32px, 8.4vw, 44px);
+  height: clamp(32px, 8.4vw, 44px);
+  border-radius: 50%;
+  background: #d3eee1;
+  color: #3f9c70;
+}
+.perishability-avatar svg {
+  width: 56%;
+  height: 56%;
+  fill: currentColor;
+}
+
+/* ---------- Main column ---------- */
+
+.perishability-page .perishability-main {
+  position: relative;
+  z-index: 1;
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4.6vw, 32px) clamp(150px, 36vw, 230px);
+}
+
+.perishability-back {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(6px, 1.8vw, 10px);
+  margin: clamp(10px, 3.4vw, 22px) 0 clamp(10px, 3vw, 16px);
+  padding: 6px 8px 6px 6px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--pl-green-600);
+  font: 600 clamp(15px, 4vw, 18px) / 1 "DM Sans", sans-serif;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.perishability-back svg {
+  width: clamp(18px, 4.8vw, 23px);
+  height: clamp(18px, 4.8vw, 23px);
+}
+.perishability-back:hover {
+  background: rgba(10, 138, 78, 0.08);
+}
+
+.perishability-back:focus-visible,
+.perishability-continue:focus-visible {
+  outline: 3px solid rgba(18, 163, 95, 0.45);
+  outline-offset: 3px;
+}
+
+/* ---------- Main white card ---------- */
+
+.perishability-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(12px, 3.4vw, 20px);
+  padding: clamp(16px, 4.8vw, 34px);
+  border: 1px solid rgba(190, 226, 208, 0.55);
+  border-radius: clamp(18px, 4.8vw, 30px);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    0 14px 44px -14px rgba(14, 116, 72, 0.18),
+    0 2px 8px rgba(14, 116, 72, 0.05);
+}
+
+.perishability-eyebrow {
+  margin: 0;
+  color: var(--pl-green-600);
+  font: 800 clamp(11px, 3vw, 13.5px) / 1.3 "DM Sans", sans-serif;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.perishability-page .perishability-card h1 {
+  margin: -6px 0 2px;
+  color: var(--pl-ink);
+  font: 800 clamp(24px, 6.3vw, 40px) / 1.1 "Manrope", sans-serif;
+  letter-spacing: -0.025em;
+}
+
+/* ---------- Shelf-life badge ---------- */
+
+.shelf-life-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: clamp(10px, 2.8vw, 14px);
+  padding: clamp(10px, 2.9vw, 15px) clamp(20px, 5.4vw, 30px) clamp(10px, 2.9vw, 15px)
+    clamp(16px, 4.4vw, 22px);
+  border-radius: clamp(14px, 3.9vw, 20px);
+  color: #ffffff;
+  background: linear-gradient(135deg, #0e9d5c 0%, var(--pl-green-700) 100%);
+  box-shadow:
+    0 10px 22px -10px rgba(6, 122, 68, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.shelf-life-icon {
+  display: grid;
+  place-items: center;
+}
+.shelf-life-icon svg {
+  width: clamp(22px, 6vw, 32px);
+  height: clamp(22px, 6vw, 32px);
+  fill: #ffffff;
+  stroke: #ffffff;
+  stroke-width: 1.6;
+}
+.shelf-life-icon svg path:last-child {
+  fill: none;
+  stroke: var(--pl-green-700);
+  stroke-width: 1.8;
+}
+.shelf-life-badge strong {
+  font: 800 clamp(20px, 5.4vw, 30px) / 1 "Manrope", sans-serif;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+/* ---------- Urgency alert ---------- */
+
+.perishability-alert {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 3.6vw, 20px);
+  padding: clamp(12px, 3.6vw, 20px) clamp(14px, 4vw, 24px);
+  border: 1px solid var(--pl-alert-border);
+  border-radius: clamp(14px, 3.7vw, 20px);
+  background: var(--pl-alert-bg);
+}
+.perishability-alert-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+.perishability-alert-icon svg {
+  width: clamp(26px, 7.2vw, 34px);
+  height: clamp(26px, 7.2vw, 34px);
+  fill: var(--pl-high);
+  stroke: #ffffff;
+  stroke-width: 2.6;
+}
+.perishability-alert-icon svg path:first-child {
+  stroke: var(--pl-high);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+.perishability-alert p {
+  margin: 0;
+  min-width: 0;
+  color: var(--pl-alert-ink);
+  font-size: clamp(12.5px, 3.4vw, 16.5px);
+  line-height: 1.5;
+}
+.perishability-alert p strong {
+  font-weight: 800;
+}
+
+/* ---------- Four-stage timeline ---------- */
+
+.perishability-timeline {
+  container-type: inline-size;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--pl-track-border);
+  border-radius: clamp(14px, 3.7vw, 20px);
+  background: var(--pl-track-bg);
+}
+
+.perishability-stage {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(5px, 1.6vw, 10px);
+  min-width: 0;
+  padding: clamp(12px, 3.4vw, 20px) 2px;
+}
+.perishability-stage + .perishability-stage {
+  border-left: 1px solid var(--pl-divider);
+}
+
+.perishability-stage .stage-dot {
+  flex: none;
+  width: clamp(9px, 2.6vw, 14px);
+  height: clamp(9px, 2.6vw, 14px);
+  margin-top: 0.16em;
+  border-radius: 50%;
+  background: var(--pl-low);
+}
+.perishability-stage .stage-copy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3px, 1vw, 6px);
+  min-width: 0;
+}
+.perishability-stage small {
+  color: #6d7f76;
+  font-size: clamp(10.5px, 2.9vw, 14.5px);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.perishability-stage b {
+  font: 800 clamp(11.5px, 3.3vw, 17px) / 1.1 "Manrope", sans-serif;
+  letter-spacing: -0.01em;
+  color: var(--pl-low);
+  white-space: nowrap;
+}
+
+.perishability-stage.medium .stage-dot {
+  background: var(--pl-medium);
+}
+.perishability-stage.medium b {
+  color: var(--pl-medium);
+}
+.perishability-stage.high .stage-dot {
+  background: var(--pl-high);
+}
+.perishability-stage.high b {
+  color: var(--pl-high);
+}
+
+/* very narrow cards: stack dot over text so nothing clips */
+@container (max-width: 272px) {
+  .perishability-stage {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+  }
+  .perishability-stage .stage-dot {
+    margin-top: 0;
+  }
+  .perishability-stage .stage-copy {
+    align-items: center;
+  }
+}
+
+/* ---------- Info card ---------- */
+
+.perishability-info {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(12px, 3.6vw, 20px);
+  padding: clamp(14px, 4vw, 24px);
+  border: 1px solid var(--pl-info-border);
+  border-radius: clamp(14px, 3.7vw, 20px);
+  background: var(--pl-info-bg);
+}
+.perishability-info-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+.perishability-info-icon svg {
+  width: clamp(24px, 6.4vw, 30px);
+  height: clamp(24px, 6.4vw, 30px);
+  fill: var(--pl-green-600);
+  stroke: #ffffff;
+  stroke-width: 2.6;
+}
+.perishability-info-icon svg circle {
+  stroke: var(--pl-green-600);
+  stroke-width: 1;
+}
+.perishability-info p {
+  margin: 0;
+  min-width: 0;
+  color: var(--pl-info-ink);
+  font-size: clamp(13px, 3.5vw, 17px);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Continue button ---------- */
+
+.perishability-actions {
+  margin-top: clamp(2px, 1vw, 6px);
+}
+.perishability-continue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2.8vw, 16px);
+  width: 100%;
+  min-height: clamp(48px, 12vw, 64px);
+  padding: 12px 20px;
+  border: 0;
+  border-radius: clamp(13px, 3.4vw, 18px);
+  color: #ffffff;
+  font: 700 clamp(16px, 4.3vw, 20px) / 1 "Manrope", sans-serif;
+  letter-spacing: 0.005em;
+  background: linear-gradient(135deg, #10a15f 0%, var(--pl-green-700) 100%);
+  box-shadow:
+    0 12px 24px -10px rgba(6, 122, 68, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.perishability-continue svg {
+  width: clamp(20px, 5.4vw, 28px);
+  height: clamp(20px, 5.4vw, 28px);
+  transition: transform 0.15s ease;
+}
+.perishability-continue:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+.perishability-continue:hover svg {
+  transform: translateX(3px);
+}
+.perishability-continue:active {
+  transform: translateY(0);
+  filter: brightness(0.97);
+}
+
+/* ---------- Decorative leaves + waves (bottom) ---------- */
+
+.perishability-decor {
+  position: absolute;
+  z-index: 0;
+  inset: auto 0 0 0;
+  height: clamp(150px, 34vw, 260px);
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 260' preserveAspectRatio='none'%3E%3Cpath d='M0 120C220 60 430 170 700 110C980 50 1210 150 1440 90V260H0Z' fill='%23cdeedd' fill-opacity='.55'/%3E%3Cpath d='M0 170C250 120 470 210 740 165C1000 120 1220 200 1440 150V260H0Z' fill='%23a9dfc3' fill-opacity='.5'/%3E%3C/svg%3E")
+    center bottom / 100% 100% no-repeat;
+}
+
+.perishability-page .decor-leaf {
+  position: absolute;
+  fill: #4fb883;
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 1.1;
+}
+.perishability-page .decor-leaf path:last-child {
+  fill: none;
+  stroke-linecap: round;
+}
+.perishability-page .decor-leaf-left-a {
+  left: -3%;
+  bottom: 12%;
+  width: clamp(86px, 24vw, 200px);
+  height: clamp(86px, 24vw, 200px);
+  fill: #5cc08d;
+  transform: rotate(22deg);
+}
+.perishability-page .decor-leaf-left-b {
+  left: clamp(30px, 9vw, 130px);
+  bottom: -7%;
+  width: clamp(64px, 17vw, 150px);
+  height: clamp(64px, 17vw, 150px);
+  fill: #2fa565;
+  transform: rotate(-14deg);
+}
+.perishability-page .decor-leaf-right-a {
+  right: -3%;
+  bottom: 16%;
+  width: clamp(84px, 23vw, 190px);
+  height: clamp(84px, 23vw, 190px);
+  fill: #5cc08d;
+  transform: scaleX(-1) rotate(24deg);
+}
+.perishability-page .decor-leaf-right-b {
+  right: clamp(30px, 9vw, 130px);
+  bottom: -6%;
+  width: clamp(60px, 16vw, 140px);
+  height: clamp(60px, 16vw, 140px);
+  fill: #2fa565;
+  transform: scaleX(-1) rotate(-14deg);
+}
+
+/* ---------------------------------------------------------
+   >= 600px : large phones / small tablets
+--------------------------------------------------------- */
+@media (min-width: 600px) {
+  .perishability-page .perishability-main {
+    max-width: 680px;
+  }
+}
+
+/* ---------------------------------------------------------
+   >= 768px : tablet
+--------------------------------------------------------- */
+@media (min-width: 768px) {
+  .perishability-page .perishability-main {
+    max-width: 720px;
+    padding-bottom: 220px;
+  }
+  .perishability-card {
+    gap: 22px;
+  }
+  .perishability-decor {
+    height: 240px;
+  }
+}
+
+/* ---------------------------------------------------------
+   >= 1024px : laptop  – badge and alert share a row,
+   card is a centred, capped-width panel (not stretched)
+--------------------------------------------------------- */
+@media (min-width: 1024px) {
+  .perishability-page .perishability-main {
+    max-width: 880px;
+    padding-bottom: 240px;
+  }
+  .perishability-card {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: stretch;
+    column-gap: 20px;
+    row-gap: 22px;
+    padding: 40px 44px 44px;
+  }
+  .perishability-card > .perishability-eyebrow,
+  .perishability-card > h1,
+  .perishability-card > .perishability-timeline,
+  .perishability-card > .perishability-info,
+  .perishability-card > .perishability-actions {
+    grid-column: 1 / -1;
+  }
+  .shelf-life-badge {
+    align-self: stretch;
+  }
+  .perishability-decor {
+    height: 260px;
+  }
+}
+
+/* ---------------------------------------------------------
+   >= 1440px : large desktop / 16:9
+--------------------------------------------------------- */
+@media (min-width: 1440px) {
+  .perishability-page .perishability-main {
+    max-width: 960px;
+  }
+  .perishability-card {
+    padding: 48px 56px 52px;
+  }
+  .perishability-decor {
+    height: 300px;
+  }
+}
+
+/* short landscape phones: keep the header and back button compact */
+@media (max-height: 480px) and (orientation: landscape) {
+  .perishability-page .perishability-header {
+    padding-block: 10px;
+  }
+  .perishability-back {
+    margin-block: 6px 8px;
+  }
+}
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .perishability-continue,
+  .perishability-continue svg {
+    transition: none;
+  }
+}
+
+
+/* =========================================================
+   BUYER COMPARISON PAGE  (app/farmer/buyers/page.tsx)
+
+   Re-uses the scoped Shelf-Life shell above (header, card,
+   waves, leaves) via .perishability-page.buyers-page, and
+   adds its own namespaced classes for the buyer cards so the
+   shared .buyers / .buyer / .pill / .primary rules used by
+   other screens are left untouched.
+========================================================= */
+
+.perishability-page.buyers-page .perishability-main {
+  max-width: 1100px;
+}
+.perishability-page.buyers-page .perishability-card {
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(12px, 3vw, 18px);
+}
+.perishability-page.buyers-page .perishability-back {
+  justify-self: start;
+  margin: 0 0 -2px -6px;
+}
+
+.buyers-page .buyer-options {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(12px, 3vw, 18px);
+}
+
+.buyers-page .buyer-option {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 2.6vw, 14px);
+  min-width: 0;
+  padding: clamp(14px, 4vw, 22px);
+  border: 1px solid #d5ebdf;
+  border-radius: clamp(14px, 3.6vw, 20px);
+  background: linear-gradient(160deg, #f7fcf9 0%, #eaf7f0 100%);
+  box-shadow: 0 6px 18px -12px rgba(14, 116, 72, 0.25);
+}
+.buyers-page .buyer-option.recommended {
+  border-color: #6fc79b;
+  background: linear-gradient(160deg, #f2fbf7 0%, #e0f4ea 100%);
+  box-shadow:
+    0 0 0 1px #6fc79b,
+    0 14px 30px -14px rgba(10, 138, 78, 0.45);
+}
+
+.buyers-page .buyer-option-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.buyers-page .buyer-option-name {
+  display: block;
+  color: var(--pl-ink);
+  font: 700 clamp(16px, 4.4vw, 19px) / 1.2 "Manrope", sans-serif;
+}
+.buyers-page .buyer-option-meta {
+  display: block;
+  margin-top: 4px;
+  color: #6d7f76;
+  font-size: clamp(11.5px, 3vw, 13px);
+  line-height: 1.35;
+}
+.buyers-page .buyer-option-badge {
+  flex: none;
+  padding: 5px 10px;
+  border-radius: 99px;
+  background: #cdeedb;
+  color: #0a7a44;
+  font: 800 10px / 1 "DM Sans", sans-serif;
+  letter-spacing: 0.06em;
+}
+
+.buyers-page .buyer-option-price {
+  color: var(--pl-ink);
+  font: 800 clamp(26px, 7.4vw, 34px) / 1 "Manrope", sans-serif;
+  letter-spacing: -0.02em;
+}
+.buyers-page .buyer-option-price small {
+  margin-left: 3px;
+  color: #6d7f76;
+  font: 500 0.42em "DM Sans", sans-serif;
+  letter-spacing: 0;
+}
+
+.buyers-page .buyer-option-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 12px;
+  color: #526a5f;
+  font-size: clamp(11.5px, 3vw, 13px);
+  line-height: 1.35;
+}
+.buyers-page .buyer-option-stats span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.buyers-page .buyer-option-net {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #d3e8dd;
+}
+.buyers-page .buyer-option-net small {
+  color: #6d7f76;
+  font-size: clamp(11.5px, 3vw, 13px);
+}
+.buyers-page .buyer-option-net b {
+  color: var(--pl-ink);
+  font: 800 clamp(15px, 4vw, 18px) / 1 "Manrope", sans-serif;
+  white-space: nowrap;
+}
+
+.buyers-page .buyers-note {
+  max-width: 640px;
+  margin: 0;
+  color: #5f7469;
+  font-size: clamp(12px, 3.2vw, 14px);
+  line-height: 1.55;
+}
+
+.buyers-page .buyers-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: clamp(48px, 12vw, 58px);
+  padding: 12px 20px;
+  border: 0;
+  border-radius: clamp(12px, 3vw, 16px);
+  color: #ffffff;
+  font: 700 clamp(15px, 4.2vw, 18px) / 1 "Manrope", sans-serif;
+  background: linear-gradient(135deg, #0a7d50 0%, #066a45 100%);
+  box-shadow:
+    0 12px 24px -10px rgba(6, 106, 69, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.buyers-page .buyers-cta:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+.buyers-page .buyers-cta:active {
+  transform: translateY(0);
+  filter: brightness(0.97);
+}
+.buyers-page .buyers-cta:focus-visible {
+  outline: 3px solid rgba(18, 163, 95, 0.45);
+  outline-offset: 3px;
+}
+
+@media (min-width: 768px) {
+  .perishability-page.buyers-page .perishability-main {
+    padding-top: 10px;
+  }
+}
+
+/* three cards side by side only when each has room for its stats */
+@media (min-width: 960px) {
+  .buyers-page .buyer-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+  }
+  /* size stat columns to their text so labels stay on one line in narrow 3-up cards */
+  .buyers-page .buyer-option-stats {
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    justify-content: space-between;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buyers-page .buyers-cta {
+    transition: none;
+  }
+}

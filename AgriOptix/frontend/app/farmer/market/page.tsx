@@ -33,6 +33,10 @@ export default function MarketIntelligence() {
   const prices = buyers.map((b) => Number(b.price)).filter((p) => Number.isFinite(p));
   const min = prices.length ? Math.min(...prices) : 24;
   const max = prices.length ? Math.max(...prices) : 28;
+  const changePct = wf.market?.changePct ?? 2;
+  const updated = wf.market?.updated || "Today";
+  const marketName = wf.market?.location || wf.harvest?.market || "Nizamabad";
+  const trendLabel = wf.market?.trend || "Stable trend";
 
   return (
     <div className="market-page">
@@ -81,7 +85,7 @@ export default function MarketIntelligence() {
                 </div>
                 <div className="market-change">
                   <TrendingUp size={18} />
-                  <span>2% higher than last week</span>
+                  <span>{changePct}% higher than last week</span>
                 </div>
               </div>
             </div>
@@ -93,7 +97,7 @@ export default function MarketIntelligence() {
                 <CalendarDays size={28} strokeWidth={1.8} />
                 <div>
                   <span>Updated</span>
-                  <strong>Today</strong>
+                  <strong>{updated}</strong>
                 </div>
               </div>
 
@@ -101,7 +105,7 @@ export default function MarketIntelligence() {
                 <MapPin size={29} strokeWidth={1.8} />
                 <div>
                   <span>Market</span>
-                  <strong>Nizamabad</strong>
+                  <strong>{marketName}</strong>
                 </div>
               </div>
             </div>
@@ -111,7 +115,7 @@ export default function MarketIntelligence() {
             <div className="market-trend-wrap">
               <div className="market-trend-pill">
                 <TrendingUp size={20} />
-                <span>Stable trend</span>
+                <span>{trendLabel}</span>
               </div>
             </div>
           </div>
