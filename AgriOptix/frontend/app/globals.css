@@ -264,3 +264,226 @@ main{margin-left:255px;width:calc(100% - 255px);padding:34px 48px 70px}header{di
 @media(max-width:480px){
   .rs-header-right span:not(.rs-lang){display:none}
 }
+/* =========================================================
+   BASIC RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100%;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background: #ffffff;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+button {
+  font-family: inherit;
+}
+
+
+/* =========================================================
+   AGRIOPTIX LANDING PAGE
+========================================================= */
+
+.landing-page {
+  width: 100%;
+  min-height: 100vh;
+
+  margin: 0;
+  padding: 0;
+
+  background: #ffffff;
+
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   IMAGE CONTAINER
+========================================================= */
+
+.landing-container {
+  position: relative;
+
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  line-height: 0;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   MAIN IMAGE
+========================================================= */
+
+.landing-image {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  max-width: none;
+
+  margin: 0;
+  padding: 0;
+
+  object-fit: contain;
+
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+
+/* =========================================================
+   GET STARTED BUTTON
+=========================================================
+
+   The original Image-2 design has the button
+   in the lower-left area.
+
+   These coordinates are based on the complete
+   1536 × 1024 style composition.
+========================================================= */
+
+.click-get-started {
+  position: absolute;
+
+  left: 4.2%;
+  top: 66.0%;
+
+  width: 15.2%;
+  height: 7.2%;
+
+  z-index: 100;
+
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  appearance: none;
+
+  display: block;
+}
+
+
+/* =========================================================
+   WATCH DEMO BUTTON
+========================================================= */
+
+.click-watch-demo {
+  position: absolute;
+
+  left: 20.0%;
+  top: 66.0%;
+
+  width: 13.5%;
+  height: 7.2%;
+
+  z-index: 100;
+
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  appearance: none;
+
+  display: block;
+}
+
+
+/* =========================================================
+   HOVER
+=========================================================
+
+   Keep transparent so the original image doesn't change.
+========================================================= */
+
+.click-get-started:hover,
+.click-watch-demo:hover {
+  background: transparent;
+}
+
+.click-get-started:focus,
+.click-watch-demo:focus {
+  outline: none;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .click-get-started {
+    left: 4%;
+    top: 65%;
+
+    width: 19%;
+    height: 8%;
+  }
+
+  .click-watch-demo {
+    left: 23%;
+    top: 65%;
+
+    width: 17%;
+    height: 8%;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .click-get-started {
+    left: 4%;
+    top: 64%;
+
+    width: 23%;
+    height: 9%;
+  }
+
+  .click-watch-demo {
+    left: 27%;
+    top: 64%;
+
+    width: 21%;
+    height: 9%;
+  }
+}
