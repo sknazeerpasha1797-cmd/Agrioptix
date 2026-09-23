@@ -1,0 +1,421 @@
+.page {
+  min-height: 100vh;
+  background: #f3faf6;
+  color: #123f3d;
+  padding: 28px;
+}
+
+.header {
+  max-width: 1450px;
+  margin: 0 auto 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #123f3d;
+}
+
+.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #087f58;
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+}
+
+.tagline {
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid #c9dcd4;
+  font-size: 14px;
+  font-weight: 400;
+  color: #50716b;
+}
+
+.loginText {
+  font-size: 14px;
+  color: #50716b;
+}
+
+.loginButton {
+  margin-left: 8px;
+  border: none;
+  background: transparent;
+  color: #087f58;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.layout {
+  max-width: 1450px;
+  min-height: 820px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 0.9fr 1.5fr 0.65fr;
+  overflow: hidden;
+  border-radius: 24px;
+  background: white;
+  box-shadow: 0 18px 55px rgba(25, 85, 66, 0.12);
+}
+
+.leftPanel {
+  padding: 54px 36px 36px;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(240, 251, 245, 0.95),
+      rgba(224, 246, 231, 0.92)
+    );
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.leftTitle {
+  margin: 0;
+  font-size: clamp(32px, 3vw, 54px);
+  line-height: 1.08;
+  color: #103f3b;
+}
+
+.greenText {
+  color: #078457;
+}
+
+.leftDescription {
+  max-width: 420px;
+  margin-top: 22px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #486d65;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-top: 35px;
+}
+
+.feature {
+  padding: 16px 10px;
+  text-align: center;
+  border-right: 1px solid #cfe3d8;
+}
+
+.featureIcon {
+  font-size: 27px;
+  margin-bottom: 10px;
+}
+
+.featureText {
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.truckImage {
+  width: 100%;
+  margin-top: 40px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.formPanel {
+  padding: 42px 38px;
+  background: white;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 46px;
+}
+
+.step {
+  position: relative;
+  text-align: center;
+  color: #6d8b84;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.step::before {
+  content: "";
+  position: absolute;
+  top: 17px;
+  left: -50%;
+  width: 100%;
+  height: 2px;
+  background: #dce9e3;
+  z-index: 0;
+}
+
+.step:first-child::before {
+  display: none;
+}
+
+.stepNumber {
+  position: relative;
+  z-index: 1;
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #edf3ef;
+  color: #426d60;
+  font-weight: 700;
+}
+
+.activeStep {
+  color: #087f58;
+}
+
+.activeStep .stepNumber {
+  background: #087f58;
+  color: white;
+}
+
+.formTitle {
+  margin: 0;
+  font-size: 30px;
+  color: #123f3d;
+}
+
+.formSubtitle {
+  margin: 8px 0 30px;
+  color: #6a8981;
+}
+
+.sectionTitle {
+  margin: 26px 0 16px;
+  font-size: 17px;
+  color: #087f58;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #315d53;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 54px;
+  padding: 0 15px;
+  border: 1px solid #d7e6df;
+  border-radius: 11px;
+  outline: none;
+  background: #fbfdfc;
+  color: #234d44;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #078457;
+  box-shadow: 0 0 0 3px rgba(8, 132, 87, 0.1);
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-top: 32px;
+}
+
+.saveButton,
+.backButton,
+.nextButton {
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.saveButton,
+.backButton {
+  background: transparent;
+  color: #087f58;
+  text-decoration: underline;
+}
+
+.nextButton {
+  min-width: 210px;
+  min-height: 52px;
+  border-radius: 28px;
+  background: #078457;
+  color: white;
+  transition: background 0.2s ease;
+}
+
+.nextButton:hover {
+  background: #056c47;
+}
+
+.rightPanel {
+  padding: 30px;
+  background: #eff9f0;
+}
+
+.rightImage {
+  width: 100%;
+  border-radius: 16px;
+  margin-bottom: 25px;
+}
+
+.rightTitle {
+  font-size: 24px;
+  line-height: 1.25;
+  color: #123f3d;
+}
+
+.rightDescription {
+  color: #52766c;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.benefitsTitle {
+  margin-top: 34px;
+  font-size: 17px;
+  color: #123f3d;
+}
+
+.benefit {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.benefitIcon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #d9f1df;
+  color: #087f58;
+}
+
+.benefitTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #123f3d;
+}
+
+.benefitText {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #64877d;
+}
+
+.footer {
+  max-width: 1450px;
+  margin: 22px auto 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  color: #65877c;
+  font-size: 13px;
+}
+
+@media (max-width: 1150px) {
+  .layout {
+    grid-template-columns: 1fr 1.5fr;
+  }
+
+  .rightPanel {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .page {
+    padding: 15px;
+  }
+
+  .header {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .tagline {
+    display: none;
+  }
+
+  .layout {
+    display: block;
+  }
+
+  .leftPanel {
+    padding: 35px 25px;
+  }
+
+  .formPanel {
+    padding: 30px 22px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .fullWidth {
+    grid-column: auto;
+  }
+
+  .steps {
+    gap: 4px;
+  }
+
+  .step {
+    font-size: 10px;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .nextButton {
+    width: 100%;
+  }
+
+  .footer {
+    flex-direction: column;
+  }
+}
