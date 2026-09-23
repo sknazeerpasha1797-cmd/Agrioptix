@@ -35,7 +35,7 @@ export default function Welcome() {
         <button
           className="click-area login"
           onClick={() => {
-            alert("Login");
+            window.location.href = "/login";
           }}
           aria-label="Login"
         />

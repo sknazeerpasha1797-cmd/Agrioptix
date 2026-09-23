@@ -1,7 +1,9 @@
 import sys
+import hashlib
+import secrets
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import Optional, List
@@ -64,6 +66,14 @@ class FarmerIn(BaseModel):
     language: Optional[str] = None
     village: Optional[str] = None
     crops: Optional[str] = None
+    farm_size: Optional[str] = None
+    land_type: Optional[str] = None
+    production: Optional[str] = None
+    password: Optional[str] = None
+
+class LoginIn(BaseModel):
+    identifier: str
+    password: str
 
 @app.get("/health")
 def health():
@@ -77,12 +87,51 @@ def create_farmer(data: FarmerIn):
     return record
 
 @app.post("/api/auth/register")
-def register():
-    return {"message": "Registration successful", "mode": "DEMO"}
+def register(data: FarmerIn):
+    """Register a farmer through the project's existing demo auth registry.
+
+    The repository currently has no database-backed auth service, so this keeps
+    registration compatible with the existing in-memory demo persistence layer
+    instead of introducing a second authentication architecture.
+    """
+    mobile = "".join(ch for ch in data.mobile if ch.isdigit())[-10:]
+    if len(mobile) != 10:
+        raise HTTPException(status_code=422, detail="Enter a valid 10-digit mobile number.")
+    if len(data.password or "") < 8:
+        raise HTTPException(status_code=422, detail="Password must contain at least 8 characters.")
+    if any(str(f.get("mobile", "")) == mobile for f in FARMERS):
+        raise HTTPException(status_code=409, detail="A farmer account with this mobile number already exists.")
+
+    salt = secrets.token_hex(16)
+    password_hash = hashlib.pbkdf2_hmac("sha256", data.password.encode("utf-8"), salt.encode("utf-8"), 120_000).hex()
+    record = {
+        "id": len(FARMERS) + 1,
+        "name": data.name.strip(),
+        "mobile": mobile,
+        "language": data.language or "English",
+        "village": data.village or "",
+        "crops": data.crops or "",
+        "farm_size": data.farm_size or "",
+        "land_type": data.land_type or "",
+        "production": data.production or "",
+        "password_hash": password_hash,
+        "password_salt": salt,
+    }
+    FARMERS.append(record)
+    return {"message": "Registration successful", "farmer": {k: v for k, v in record.items() if k not in {"password_hash", "password_salt"}}, "mode": "DEMO"}
 
 @app.post("/api/auth/login")
-def login():
-    return {"access_token": "demo-token", "role": "farmer"}
+def login(data: LoginIn):
+    identifier = data.identifier.strip()
+    mobile = "".join(ch for ch in identifier if ch.isdigit())[-10:] if any(ch.isdigit() for ch in identifier) else ""
+    farmer = next((f for f in FARMERS if f.get("mobile") == mobile or f.get("email") == identifier.lower()), None)
+    if not farmer:
+        raise HTTPException(status_code=401, detail="Invalid mobile/email or password.")
+    candidate = hashlib.pbkdf2_hmac("sha256", data.password.encode("utf-8"), farmer["password_salt"].encode("utf-8"), 120_000).hex()
+    if not secrets.compare_digest(candidate, farmer["password_hash"]):
+        raise HTTPException(status_code=401, detail="Invalid mobile/email or password.")
+    safe_farmer = {k: v for k, v in farmer.items() if k not in {"password_hash", "password_salt"}}
+    return {"access_token": f"demo-token-{farmer['id']}", "role": "farmer", "farmer": safe_farmer}
 
 @app.get("/api/harvests")
 def harvests():

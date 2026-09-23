@@ -79,7 +79,7 @@ export default function RoleSelection() {
             <Globe size={15} /> EN
           </span>
           <span>Already have an account?</span>
-          <button className="rs-login-btn" onClick={() => router.push("/role-selection")}>
+          <button className="rs-login-btn" onClick={() => router.push("/login")}>
             Login
           </button>
         </div>
