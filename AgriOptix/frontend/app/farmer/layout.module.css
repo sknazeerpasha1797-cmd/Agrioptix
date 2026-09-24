@@ -1,0 +1,112 @@
+.farmerRoot {
+  min-height: 100dvh;
+  width: 100%;
+  overflow-x: clip;
+}
+
+/* globals.css contains legacy dashboard rules for the whole app. Keep those
+   rules from leaking into the Farmer's newer full-width screens. */
+.farmerRoot :global(main) {
+  margin-left: 0 !important;
+  width: auto !important;
+}
+
+.farmerRoot :global(header) {
+  margin-bottom: 0 !important;
+}
+
+/* Preserve the existing dashboard's sidebar layout while the generic main
+   reset above protects the other Farmer screens. */
+.farmerRoot :global(.shell > main) {
+  margin-left: 255px !important;
+  width: calc(100% - 255px) !important;
+}
+
+.farmerRoot :global(img) {
+  max-width: 100%;
+}
+
+.farmerRoot :global(table) {
+  max-width: 100%;
+}
+
+@media (max-width: 900px) {
+  .farmerRoot :global(.shell > main) {
+    margin-left: 72px !important;
+    width: calc(100% - 72px) !important;
+  }
+
+  .farmerRoot :global(.step-shell-header) {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    gap: 12px;
+  }
+
+  .farmerRoot :global(.step-shell-main),
+  .farmerRoot :global(.step-shell-main.wide) {
+    width: min(100% - 24px, 1180px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .farmerRoot :global(.step-shell-header) {
+    min-height: 54px;
+    padding: 8px 12px !important;
+    gap: 8px;
+  }
+
+  .farmerRoot :global(.step-shell-brand) {
+    min-width: 0;
+    flex: 0 1 auto;
+  }
+
+  .farmerRoot :global(.step-shell-brand b) {
+    white-space: nowrap;
+  }
+
+  .farmerRoot :global(.step-progress) {
+    min-width: 0 !important;
+    width: min(150px, 42vw);
+    flex: 0 1 150px;
+    gap: 6px;
+  }
+
+  .farmerRoot :global(.step-progress-track) {
+    min-width: 0 !important;
+  }
+
+  .farmerRoot :global(.step-shell-main),
+  .farmerRoot :global(.step-shell-main.wide) {
+    width: calc(100% - 18px) !important;
+    max-width: none !important;
+    margin-top: 10px !important;
+    margin-left: 9px !important;
+    margin-right: 9px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .farmerRoot :global(.shell > main) {
+    margin-left: 72px !important;
+    width: calc(100% - 72px) !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .farmerRoot :global(.step-shell-brand b) {
+    font-size: 16px !important;
+  }
+
+  .farmerRoot :global(.step-progress) {
+    width: min(128px, 38vw);
+    flex-basis: 128px;
+  }
+
+  .farmerRoot :global(.step-progress span) {
+    font-size: 8px;
+  }
+}

@@ -3,11 +3,13 @@ import hashlib
 import secrets
 import re
 from pathlib import Path
-from typing import Optional, List
+from typing import Optional, List, Literal
+from datetime import datetime
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+
 
 
 # ============================================================
@@ -61,6 +63,8 @@ DEMO_HARVEST = {
 
 
 FARMERS: List[dict] = []
+HARVESTS: List[dict] = []
+NEXT_HARVEST_ID = 1
 
 DRIVERS: List[dict] = []
 
@@ -217,11 +221,33 @@ def safe_driver(driver: dict) -> dict:
 # ============================================================
 
 class HarvestIn(BaseModel):
-    crop: str = "Tomato"
-    quantity_kg: float = Field(gt=0)
+    crop: Optional[str] = None
+    variety: Optional[str] = None
+    quantity: Optional[float] = Field(default=None, gt=0)
+    quantity_unit: Literal["kg", "quintal", "tonne"] = "kg"
+    harvest_date: Optional[str] = None
     harvest_time: Optional[str] = None
-    latitude: float = 17.385
-    longitude: float = 78.4867
+    pickup_readiness: Optional[str] = None
+    pickup_readiness_date: Optional[str] = None
+    location: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    overall_quality: Optional[str] = None
+    ripeness: Optional[str] = None
+    visible_damage: Optional[str] = None
+    size: Optional[str] = None
+    freshness: Optional[str] = None
+    estimated_shelf_life: Optional[str] = None
+    photos: List[str] = []
+    packaging_type: Optional[str] = None
+    package_weight: Optional[float] = Field(default=None, gt=0)
+    storage_condition: Optional[str] = None
+    special_handling: Optional[str] = None
+    special_handling_notes: Optional[str] = None
+    pickup_date: Optional[str] = None
+    pickup_time: Optional[str] = None
+    loading_assistance: Optional[str] = None
+    status: Literal["DRAFT", "PUBLISHED", "AVAILABLE"] = "PUBLISHED"
 
 
 class StatusIn(BaseModel):
@@ -717,33 +743,79 @@ def driver_dashboard(driver_id: int):
 
 @app.get("/api/harvests")
 def harvests():
-
-    return [
-        DEMO_HARVEST
-    ]
+    published = [h for h in HARVESTS if h.get("status") in {"PUBLISHED", "AVAILABLE"}]
+    if published:
+        return list(reversed(published))
+    return [DEMO_HARVEST]
 
 
 @app.post("/api/harvests")
 def create_harvest(data: HarvestIn):
+    global NEXT_HARVEST_ID, DEMO_HARVEST
 
-    global DEMO_HARVEST
+    if data.status != "DRAFT":
+        required = {
+            "crop": data.crop,
+            "quantity": data.quantity,
+            "harvest_date": data.harvest_date,
+            "harvest_time": data.harvest_time,
+            "pickup_readiness": data.pickup_readiness,
+            "location": data.location,
+            "overall_quality": data.overall_quality,
+            "ripeness": data.ripeness,
+            "visible_damage": data.visible_damage,
+            "size": data.size,
+            "freshness": data.freshness,
+            "estimated_shelf_life": data.estimated_shelf_life,
+            "packaging_type": data.packaging_type,
+            "storage_condition": data.storage_condition,
+            "pickup_date": data.pickup_date,
+            "pickup_time": data.pickup_time,
+            "loading_assistance": data.loading_assistance,
+        }
 
-    DEMO_HARVEST = {
-        **DEMO_HARVEST,
+        missing = [
+            name for name, value in required.items()
+            if value is None or value == ""
+        ]
 
-        "crop": data.crop,
+        if missing:
+            raise HTTPException(
+                status_code=422,
+                detail=f"Incomplete harvest record. Missing: {', '.join(missing)}"
+            )
 
-        "quantity_kg": data.quantity_kg,
+    quantity_kg = data.quantity or 0
 
-        "harvest_time": data.harvest_time,
+    if data.quantity_unit == "quintal":
+        quantity_kg = data.quantity * 100
+    elif data.quantity_unit == "tonne":
+        quantity_kg = data.quantity * 1000
 
-        "latitude": data.latitude,
+    record = data.model_dump()
 
-        "longitude": data.longitude,
-    }
+    record.update({
+        "id": NEXT_HARVEST_ID,
+        "quantity_kg": quantity_kg,
+        "created_at": datetime.utcnow().isoformat() + "Z",
+        "updated_at": datetime.utcnow().isoformat() + "Z",
+    })
 
-    return DEMO_HARVEST
+    HARVESTS.append(record)
+    NEXT_HARVEST_ID += 1
 
+    if record["status"] in {"PUBLISHED", "AVAILABLE"}:
+        DEMO_HARVEST = {
+            **DEMO_HARVEST,
+            "id": record["id"],
+            "crop": record["crop"],
+            "quantity_kg": quantity_kg,
+            "harvest_time": f'{record["harvest_date"]}T{record["harvest_time"]}',
+            "harvest": record,
+            "status": "AVAILABLE",
+        }
+
+    return record
 
 # ============================================================
 # QUALITY ANALYSIS - DEMO
