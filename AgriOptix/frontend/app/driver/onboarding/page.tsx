@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import styles from "./DriverRegister.module.css";
 
 type DriverForm = {
@@ -13,9 +13,16 @@ type DriverForm = {
   drivingLicenseNumber: string;
   licenseExpiryDate: string;
   vehicleCapacity: string;
+  experience: string;
+  availability: string;
+  preferredRoutes: string;
+  password: string;
+  confirmPassword: string;
 };
 
-export default function DriverRegisterPage() {
+export default function DriverOnboardingPage() {
+  const [currentStep, setCurrentStep] = useState(1);
+
   const [form, setForm] = useState<DriverForm>({
     fullName: "Suresh Reddy",
     mobileNumber: "",
@@ -26,37 +33,149 @@ export default function DriverRegisterPage() {
     drivingLicenseNumber: "",
     licenseExpiryDate: "",
     vehicleCapacity: "",
+    experience: "",
+    availability: "",
+    preferredRoutes: "",
+    password: "",
+    confirmPassword: "",
   });
 
-  const [currentStep, setCurrentStep] = useState(1);
-  const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  function updateField(
-    field: keyof DriverForm,
-    value: string
+  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  function updateField<K extends keyof DriverForm>(
+    field: K,
+    value: DriverForm[K]
   ) {
-    setForm((previousForm) => ({
-      ...previousForm,
+    setForm((previous) => ({
+      ...previous,
       [field]: value,
     }));
   }
 
-  function handleNext(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  function goToLogin() {
+    window.location.href = "/driver/login";
+  }
 
-    if (currentStep < 4) {
-      setCurrentStep((previousStep) => previousStep + 1);
-      setMessage("");
+  function validateStepOne() {
+    if (!form.fullName.trim()) {
+      setMessage("Please enter your full name.");
+      return false;
+    }
+
+    const mobile = form.mobileNumber.replace(/\D/g, "").slice(-10);
+
+    if (mobile.length !== 10) {
+      setMessage("Please enter a valid 10-digit mobile number.");
+      return false;
+    }
+
+    updateField("mobileNumber", mobile);
+
+    if (!form.preferredLanguage) {
+      setMessage("Please select your preferred language.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function validateStepTwo() {
+    if (!form.vehicleType.trim()) {
+      setMessage("Please select your vehicle type.");
+      return false;
+    }
+
+    if (!form.vehicleNumber.trim()) {
+      setMessage("Please enter your vehicle number.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function validateStepThree() {
+    if (!form.experience.trim()) {
+      setMessage("Please enter your driving experience.");
+      return false;
+    }
+
+    if (!form.availability.trim()) {
+      setMessage("Please select your availability.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function validateStepFour() {
+    if (form.password.length < 6) {
+      setMessage("Password must be at least 6 characters.");
+      return false;
+    }
+
+    if (form.password !== form.confirmPassword) {
+      setMessage("Passwords do not match.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function handleNext() {
+    setMessage("");
+
+    if (currentStep === 1 && !validateStepOne()) {
       return;
     }
 
-    setMessage("Driver registration details are ready to submit.");
+    if (currentStep === 2 && !validateStepTwo()) {
+      return;
+    }
 
-    /*
-      Replace this section with your existing backend API request.
+    if (currentStep === 3 && !validateStepThree()) {
+      return;
+    }
 
-      Example:
+    setCurrentStep((previous) => Math.min(previous + 1, 4));
+  }
 
+  function handleBack() {
+    setMessage("");
+    setCurrentStep((previous) => Math.max(previous - 1, 1));
+  }
+
+  async function handleSubmit() {
+    setMessage("");
+
+    if (!validateStepFour()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const mobile = form.mobileNumber.replace(/\D/g, "").slice(-10);
+
+    const registrationData = {
+      fullName: form.fullName,
+      mobileNumber: mobile,
+      preferredLanguage: form.preferredLanguage,
+      currentLocation: form.currentLocation,
+      vehicleType: form.vehicleType,
+      vehicleNumber: form.vehicleNumber,
+      drivingLicenseNumber: form.drivingLicenseNumber,
+      licenseExpiryDate: form.licenseExpiryDate,
+      vehicleCapacity: form.vehicleCapacity,
+      experience: form.experience,
+      availability: form.availability,
+      preferredRoutes: form.preferredRoutes,
+      password: form.password,
+    };
+
+    try {
       const response = await fetch(
         "http://127.0.0.1:8000/api/drivers/register",
         {
@@ -64,110 +183,121 @@ export default function DriverRegisterPage() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(form),
+          body: JSON.stringify(registrationData),
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Registration failed");
-      }
-    */
-  }
+      const data = await response.json();
 
-  function handleBack() {
-    if (currentStep > 1) {
-      setCurrentStep((previousStep) => previousStep - 1);
+      if (!response.ok) {
+        setMessage(
+          data.detail || "Registration failed. Please try again."
+        );
+        setIsSubmitting(false);
+        return;
+      }
+
+      setMessage(
+        "Driver registration successful! Redirecting to login..."
+      );
+
+      setTimeout(() => {
+        window.location.href = "/driver/login";
+      }, 1200);
+    } catch (error) {
+      console.error("Driver registration error:", error);
+
+      setMessage(
+        "Unable to connect to the server. Please make sure the backend is running."
+      );
+
+      setIsSubmitting(false);
     }
   }
+  function handleSaveAndExit() {
+    const { password, confirmPassword, ...safeForm } = form;
 
-  function handleSaveExit() {
     localStorage.setItem(
       "agrioptix_driver_registration",
-      JSON.stringify(form)
+      JSON.stringify(safeForm)
     );
 
     setMessage("Your registration details have been saved.");
   }
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
+      {/* HEADER */}
       <header className={styles.header}>
         <div className={styles.brand}>
-          <div className={styles.logo}>🌿</div>
+          <div className={styles.logo}>A</div>
 
-          <span>AgriOptix</span>
-
-          <span className={styles.tagline}>
-            Smarter Farms. Better Futures.
-          </span>
+          <div>
+            <h1>AgriOptix</h1>
+            <p className={styles.tagline}>
+              Intelligent Farm-to-Market Optimization
+            </p>
+          </div>
         </div>
 
         <div className={styles.loginText}>
           Already have an account?
-
-          <button className={styles.loginButton}>
+          <button
+            type="button"
+            className={styles.loginButton}
+            onClick={goToLogin}
+          >
             Login
           </button>
         </div>
       </header>
 
-      <section className={styles.layout}>
+      <div className={styles.layout}>
+
+        {/* LEFT PANEL */}
         <aside className={styles.leftPanel}>
-          <div>
-            <h1 className={styles.leftTitle}>
-              Join as a
-              <br />
+          <h2 className={styles.leftTitle}>
+            Drive the <span className={styles.greenText}>Future</span> of
+            Agriculture
+          </h2>
 
-              <span className={styles.greenText}>
-                Driver / Transporter
-              </span>
-            </h1>
+          <p className={styles.leftDescription}>
+            Join AgriOptix and help farmers move their fresh produce
+            faster, smarter, and more efficiently.
+          </p>
 
-            <p className={styles.leftDescription}>
-              Become a part of the agricultural supply chain.
-              Transport fresh produce, earn consistently,
-              and grow with AgriOptix.
-            </p>
+          <div className={styles.features}>
+            <div className={styles.feature}>
+              <div className={styles.featureIcon}>🚚</div>
 
-            <div className={styles.features}>
-              <div className={styles.feature}>
-                <div className={styles.featureIcon}>🚚</div>
-
-                <div className={styles.featureText}>
-                  Reliable
-                  <br />
-                  Transport Network
-                </div>
+              <div className={styles.featureText}>
+                <strong>Smart Route Planning</strong>
+                <span>
+                  Get optimized routes based on pickup and delivery
+                  locations.
+                </span>
               </div>
+            </div>
 
-              <div className={styles.feature}>
-                <div className={styles.featureIcon}>🛡️</div>
+            <div className={styles.feature}>
+              <div className={styles.featureIcon}>📦</div>
 
-                <div className={styles.featureText}>
-                  Secure
-                  <br />
-                  Payments
-                </div>
+              <div className={styles.featureText}>
+                <strong>Verified Loads</strong>
+                <span>
+                  Receive reliable agricultural transport requests.
+                </span>
               </div>
+            </div>
 
-              <div className={styles.feature}>
-                <div className={styles.featureIcon}>📍</div>
+            <div className={styles.feature}>
+              <div className={styles.featureIcon}>💰</div>
 
-                <div className={styles.featureText}>
-                  Flexible
-                  <br />
-                  Opportunities
-                </div>
-              </div>
-
-              <div className={styles.feature}>
-                <div className={styles.featureIcon}>🌱</div>
-
-                <div className={styles.featureText}>
-                  Support for
-                  <br />
-                  Your Journey
-                </div>
+              <div className={styles.featureText}>
+                <strong>Transparent Earnings</strong>
+                <span>
+                  Know your trip details and expected earnings.
+                </span>
               </div>
             </div>
           </div>
@@ -179,597 +309,595 @@ export default function DriverRegisterPage() {
           />
         </aside>
 
-        <section className={styles.formPanel}>
+        {/* FORM PANEL */}
+        <main className={styles.formPanel}>
+
+          {/* STEPS */}
           <div className={styles.steps}>
-            <div
-              className={`${styles.step} ${
-                currentStep >= 1 ? styles.activeStep : ""
-              }`}
-            >
-              <div className={styles.stepNumber}>
-                1
+            {[1, 2, 3, 4].map((step) => (
+              <div
+                key={step}
+                className={`${styles.step} ${
+                  currentStep === step ? styles.activeStep : ""
+                }`}
+              >
+                <div className={styles.stepNumber}>{step}</div>
+
+                <span>
+                  {step === 1 && "Basic Details"}
+                  {step === 2 && "Vehicle & Documents"}
+                  {step === 3 && "Experience"}
+                  {step === 4 && "Verification"}
+                </span>
               </div>
-
-              Basic Details
-            </div>
-
-            <div
-              className={`${styles.step} ${
-                currentStep >= 2 ? styles.activeStep : ""
-              }`}
-            >
-              <div className={styles.stepNumber}>
-                2
-              </div>
-
-              Vehicle & Documents
-            </div>
-
-            <div
-              className={`${styles.step} ${
-                currentStep >= 3 ? styles.activeStep : ""
-              }`}
-            >
-              <div className={styles.stepNumber}>
-                3
-              </div>
-
-              Experience & Availability
-            </div>
-
-            <div
-              className={`${styles.step} ${
-                currentStep >= 4 ? styles.activeStep : ""
-              }`}
-            >
-              <div className={styles.stepNumber}>
-                4
-              </div>
-
-              Verification
-            </div>
+            ))}
           </div>
 
           <h2 className={styles.formTitle}>
-            Driver / Transporter Registration
+            {currentStep === 1 && "Tell us about yourself"}
+            {currentStep === 2 && "Vehicle & document details"}
+            {currentStep === 3 && "Experience & availability"}
+            {currentStep === 4 && "Create your driver account"}
           </h2>
 
           <p className={styles.formSubtitle}>
-            Fill in your details to get started.
+            {currentStep === 1 &&
+              "Enter your basic information to get started."}
+
+            {currentStep === 2 &&
+              "Provide the details of the vehicle you will use."}
+
+            {currentStep === 3 &&
+              "Tell us about your driving experience and availability."}
+
+            {currentStep === 4 &&
+              "Review your information and create a secure password."}
           </p>
 
-          <form onSubmit={handleNext}>
-            {currentStep === 1 && (
-              <>
-                <h3 className={styles.sectionTitle}>
-                  Personal Information
-                </h3>
+          {message && (
+            <div
+              style={{
+                marginBottom: "20px",
+                padding: "12px 16px",
+                borderRadius: "10px",
+                background: "#f0fdf4",
+                color: "#166534",
+                border: "1px solid #bbf7d0",
+                fontSize: "14px",
+              }}
+            >
+              {message}
+            </div>
+          )}
 
-                <div className={styles.formGrid}>
-                  <div className={styles.field}>
-                    <label htmlFor="fullName">
-                      Full Name *
-                    </label>
+          {/* STEP 1 */}
+          {currentStep === 1 && (
+            <div>
+              <h3 className={styles.sectionTitle}>
+                Basic Details
+              </h3>
 
-                    <input
-                      id="fullName"
-                      value={form.fullName}
-                      placeholder="Enter your full name"
-                      onChange={(event) =>
-                        updateField(
-                          "fullName",
-                          event.target.value
-                        )
-                      }
-                      required
-                    />
-                  </div>
+              <div className={styles.formGrid}>
 
-                  <div className={styles.field}>
-                    <label htmlFor="mobileNumber">
-                      Mobile Number *
-                    </label>
+                <div className={styles.field}>
+                  <label>Full Name</label>
 
-                    <input
-                      id="mobileNumber"
-                      value={form.mobileNumber}
-                      placeholder="+91 Enter 10 digit number"
-                      onChange={(event) =>
-                        updateField(
-                          "mobileNumber",
-                          event.target.value
-                        )
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className={styles.field}>
-                    <label htmlFor="preferredLanguage">
-                      Preferred Language *
-                    </label>
-
-                    <select
-                      id="preferredLanguage"
-                      value={form.preferredLanguage}
-                      onChange={(event) =>
-                        updateField(
-                          "preferredLanguage",
-                          event.target.value
-                        )
-                      }
-                    >
-                      <option value="Telugu">
-                        Telugu
-                      </option>
-
-                      <option value="Hindi">
-                        Hindi
-                      </option>
-
-                      <option value="English">
-                        English
-                      </option>
-
-                      <option value="Tamil">
-                        Tamil
-                      </option>
-
-                      <option value="Kannada">
-                        Kannada
-                      </option>
-                    </select>
-                  </div>
-
-                  <div className={styles.field}>
-                    <label htmlFor="currentLocation">
-                      Current Location *
-                    </label>
-
-                    <input
-                      id="currentLocation"
-                      value={form.currentLocation}
-                      placeholder="Enter your location"
-                      onChange={(event) =>
-                        updateField(
-                          "currentLocation",
-                          event.target.value
-                        )
-                      }
-                      required
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    value={form.fullName}
+                    onChange={(e) =>
+                      updateField("fullName", e.target.value)
+                    }
+                    placeholder="Enter your full name"
+                  />
                 </div>
-              </>
-            )}
 
-            {currentStep === 2 && (
-              <>
-                <h3 className={styles.sectionTitle}>
-                  Vehicle Information
-                </h3>
+                <div className={styles.field}>
+                  <label>Mobile Number</label>
 
-                <div className={styles.formGrid}>
-                  <div className={styles.field}>
-                    <label htmlFor="vehicleType">
-                      Vehicle Type *
-                    </label>
-
-                    <select
-                      id="vehicleType"
-                      value={form.vehicleType}
-                      onChange={(event) =>
-                        updateField(
-                          "vehicleType",
-                          event.target.value
-                        )
-                      }
-                    >
-                      <option value="1-Ton Truck">
-                        1-Ton Truck
-                      </option>
-
-                      <option value="Mini Truck">
-                        Mini Truck
-                      </option>
-
-                      <option value="Pickup Van">
-                        Pickup Van
-                      </option>
-
-                      <option value="3-Ton Truck">
-                        3-Ton Truck
-                      </option>
-
-                      <option value="6-Ton Truck">
-                        6-Ton Truck
-                      </option>
-
-                      <option value="Refrigerated Truck">
-                        Refrigerated Truck
-                      </option>
-                    </select>
-                  </div>
-
-                  <div className={styles.field}>
-                    <label htmlFor="vehicleNumber">
-                      Vehicle Number *
-                    </label>
-
-                    <input
-                      id="vehicleNumber"
-                      value={form.vehicleNumber}
-                      placeholder="TS 09 AB 1234"
-                      onChange={(event) =>
-                        updateField(
-                          "vehicleNumber",
-                          event.target.value
-                        )
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className={styles.field}>
-                    <label htmlFor="drivingLicenseNumber">
-                      Driving License Number *
-                    </label>
-
-                    <input
-                      id="drivingLicenseNumber"
-                      value={form.drivingLicenseNumber}
-                      placeholder="Enter license number"
-                      onChange={(event) =>
-                        updateField(
-                          "drivingLicenseNumber",
-                          event.target.value
-                        )
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className={styles.field}>
-                    <label htmlFor="licenseExpiryDate">
-                      License Expiry Date *
-                    </label>
-
-                    <input
-                      id="licenseExpiryDate"
-                      type="date"
-                      value={form.licenseExpiryDate}
-                      onChange={(event) =>
-                        updateField(
-                          "licenseExpiryDate",
-                          event.target.value
-                        )
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div
-                    className={`${styles.field} ${styles.fullWidth}`}
-                  >
-                    <label htmlFor="vehicleCapacity">
-                      Vehicle Capacity *
-                    </label>
-
-                    <select
-                      id="vehicleCapacity"
-                      value={form.vehicleCapacity}
-                      onChange={(event) =>
-                        updateField(
-                          "vehicleCapacity",
-                          event.target.value
-                        )
-                      }
-                      required
-                    >
-                      <option value="">
-                        Select capacity
-                      </option>
-
-                      <option value="500 kg">
-                        500 kg
-                      </option>
-
-                      <option value="1 Ton">
-                        1 Ton
-                      </option>
-
-                      <option value="2 Ton">
-                        2 Ton
-                      </option>
-
-                      <option value="3 Ton">
-                        3 Ton
-                      </option>
-
-                      <option value="5 Ton">
-                        5 Ton
-                      </option>
-
-                      <option value="10 Ton">
-                        10 Ton
-                      </option>
-                    </select>
-                  </div>
+                  <input
+                    type="tel"
+                    value={form.mobileNumber}
+                    onChange={(e) =>
+                      updateField("mobileNumber", e.target.value)
+                    }
+                    placeholder="10-digit mobile number"
+                    maxLength={15}
+                  />
                 </div>
-              </>
-            )}
-            )
-            {currentStep === 3 && (
-              <>
-                <h3 className={styles.sectionTitle}>
-                  Experience & Availability
-                </h3>
 
-                <div className={styles.formGrid}>
-                  <div className={styles.field}>
-                    <label htmlFor="experience">
-                      Driving Experience
-                    </label>
+                <div className={styles.field}>
+                  <label>Preferred Language</label>
 
-                    <select
-                      id="experience"
-                      defaultValue=""
-                    >
-                      <option value="">
-                        Select experience
-                      </option>
-
-                      <option value="0-1">
-                        Less than 1 year
-                      </option>
-
-                      <option value="1-3">
-                        1–3 years
-                      </option>
-
-                      <option value="3-5">
-                        3–5 years
-                      </option>
-
-                      <option value="5+">
-                        More than 5 years
-                      </option>
-                    </select>
-                  </div>
-
-                  <div className={styles.field}>
-                    <label htmlFor="availability">
-                      Availability
-                    </label>
-
-                    <select
-                      id="availability"
-                      defaultValue=""
-                    >
-                      <option value="">
-                        Select availability
-                      </option>
-
-                      <option value="full-time">
-                        Full-time
-                      </option>
-
-                      <option value="part-time">
-                        Part-time
-                      </option>
-
-                      <option value="on-demand">
-                        On-demand
-                      </option>
-                    </select>
-                  </div>
-
-                  <div
-                    className={`${styles.field} ${styles.fullWidth}`}
+                  <select
+                    value={form.preferredLanguage}
+                    onChange={(e) =>
+                      updateField(
+                        "preferredLanguage",
+                        e.target.value
+                      )
+                    }
                   >
-                    <label htmlFor="preferredRoutes">
-                      Preferred Delivery Routes
-                    </label>
-
-                    <input
-                      id="preferredRoutes"
-                      placeholder="Example: Hyderabad, Ranga Reddy, Sangareddy"
-                    />
-                  </div>
+                    <option value="Telugu">Telugu</option>
+                    <option value="English">English</option>
+                    <option value="Hindi">Hindi</option>
+                    <option value="Tamil">Tamil</option>
+                    <option value="Kannada">Kannada</option>
+                  </select>
                 </div>
-              </>
-            )}
 
-            {currentStep === 4 && (
-              <>
-                <h3 className={styles.sectionTitle}>
-                  Review Your Information
-                </h3>
+                <div className={styles.field}>
+                  <label>Current Location</label>
 
-                <div className={styles.formGrid}>
-                  <div className={styles.field}>
-                    <label>Full Name</label>
-
-                    <input
-                      value={form.fullName}
-                      readOnly
-                    />
-                  </div>
-
-                  <div className={styles.field}>
-                    <label>Mobile Number</label>
-
-                    <input
-                      value={form.mobileNumber}
-                      readOnly
-                    />
-                  </div>
-
-                  <div className={styles.field}>
-                    <label>Vehicle Type</label>
-
-                    <input
-                      value={form.vehicleType}
-                      readOnly
-                    />
-                  </div>
-
-                  <div className={styles.field}>
-                    <label>Vehicle Number</label>
-
-                    <input
-                      value={form.vehicleNumber}
-                      readOnly
-                    />
-                  </div>
-
-                  <div
-                    className={`${styles.field} ${styles.fullWidth}`}
-                  >
-                    <label>Location</label>
-
-                    <input
-                      value={form.currentLocation}
-                      readOnly
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    value={form.currentLocation}
+                    onChange={(e) =>
+                      updateField(
+                        "currentLocation",
+                        e.target.value
+                      )
+                    }
+                    placeholder="City / Village"
+                  />
                 </div>
-              </>
-            )}
 
-            {message && <p>{message}</p>}
-
-            <div className={styles.actions}>
-              <button
-                type="button"
-                className={styles.saveButton}
-                onClick={handleSaveExit}
-              >
-                Save & Exit
-              </button>
-
-              <div>
-                {currentStep > 1 && (
-                  <button
-                    type="button"
-                    className={styles.backButton}
-                    onClick={handleBack}
-                  >
-                    Back
-                  </button>
-                )}
-
-                <button
-                  type="submit"
-                  className={styles.nextButton}
-                >
-                  {currentStep === 4
-                    ? "Create Account"
-                    : "Next →"}
-                </button>
               </div>
             </div>
-          </form>
-        </section>
+          )}
 
+          {/* STEP 2 */}
+          {currentStep === 2 && (
+            <div>
+              <h3 className={styles.sectionTitle}>
+                Vehicle & Documents
+              </h3>
+
+              <div className={styles.formGrid}>
+
+                <div className={styles.field}>
+                  <label>Vehicle Type</label>
+
+                  <select
+                    value={form.vehicleType}
+                    onChange={(e) =>
+                      updateField("vehicleType", e.target.value)
+                    }
+                  >
+                    <option value="1-Ton Truck">
+                      1-Ton Truck
+                    </option>
+
+                    <option value="2-Ton Truck">
+                      2-Ton Truck
+                    </option>
+
+                    <option value="Mini Truck">
+                      Mini Truck
+                    </option>
+
+                    <option value="Pickup">
+                      Pickup
+                    </option>
+
+                    <option value="Tractor">
+                      Tractor
+                    </option>
+                  </select>
+                </div>
+
+                <div className={styles.field}>
+                  <label>Vehicle Number</label>
+
+                  <input
+                    type="text"
+                    value={form.vehicleNumber}
+                    onChange={(e) =>
+                      updateField(
+                        "vehicleNumber",
+                        e.target.value
+                      )
+                    }
+                    placeholder="TS 09 AB 1234"
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>Driving License Number</label>
+
+                  <input
+                    type="text"
+                    value={form.drivingLicenseNumber}
+                    onChange={(e) =>
+                      updateField(
+                        "drivingLicenseNumber",
+                        e.target.value
+                      )
+                    }
+                    placeholder="Enter license number"
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>License Expiry Date</label>
+
+                  <input
+                    type="date"
+                    value={form.licenseExpiryDate}
+                    onChange={(e) =>
+                      updateField(
+                        "licenseExpiryDate",
+                        e.target.value
+                      )
+                    }
+                  />
+                </div>
+
+                <div
+                  className={`${styles.field} ${styles.fullWidth}`}
+                >
+                  <label>Vehicle Capacity</label>
+
+                  <input
+                    type="text"
+                    value={form.vehicleCapacity}
+                    onChange={(e) =>
+                      updateField(
+                        "vehicleCapacity",
+                        e.target.value
+                      )
+                    }
+                    placeholder="Example: 1000 kg"
+                  />
+                </div>
+
+              </div>
+            </div>
+          )}
+          {/* STEP 3 */}
+          {currentStep === 3 && (
+            <div>
+              <h3 className={styles.sectionTitle}>
+                Experience & Availability
+              </h3>
+
+              <div className={styles.formGrid}>
+
+                <div className={styles.field}>
+                  <label>Driving Experience</label>
+
+                  <input
+                    type="text"
+                    value={form.experience}
+                    onChange={(e) =>
+                      updateField(
+                        "experience",
+                        e.target.value
+                      )
+                    }
+                    placeholder="Example: 5 years"
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>Availability</label>
+
+                  <select
+                    value={form.availability}
+                    onChange={(e) =>
+                      updateField(
+                        "availability",
+                        e.target.value
+                      )
+                    }
+                  >
+                    <option value="">
+                      Select availability
+                    </option>
+
+                    <option value="Full Time">
+                      Full Time
+                    </option>
+
+                    <option value="Part Time">
+                      Part Time
+                    </option>
+
+                    <option value="Weekends">
+                      Weekends
+                    </option>
+                  </select>
+                </div>
+
+                <div
+                  className={`${styles.field} ${styles.fullWidth}`}
+                >
+                  <label>Preferred Routes</label>
+
+                  <input
+                    type="text"
+                    value={form.preferredRoutes}
+                    onChange={(e) =>
+                      updateField(
+                        "preferredRoutes",
+                        e.target.value
+                      )
+                    }
+                    placeholder="Example: Hyderabad → Ranga Reddy"
+                  />
+                </div>
+
+              </div>
+            </div>
+          )}
+
+          {/* STEP 4 */}
+          {currentStep === 4 && (
+            <div>
+              <h3 className={styles.sectionTitle}>
+                Create Account
+              </h3>
+
+              <div className={styles.formGrid}>
+
+                <div className={styles.field}>
+                  <label>Password</label>
+
+                  <div
+                    style={{
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <input
+                      type={
+                        showPassword
+                          ? "text"
+                          : "password"
+                      }
+                      value={form.password}
+                      onChange={(e) =>
+                        updateField(
+                          "password",
+                          e.target.value
+                        )
+                      }
+                      placeholder="Minimum 6 characters"
+                      style={{
+                        width: "100%",
+                        paddingRight: "75px",
+                      }}
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowPassword(
+                          !showPassword
+                        )
+                      }
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        border: "none",
+                        background: "transparent",
+                        cursor: "pointer",
+                        color: "#166534",
+                        fontSize: "13px",
+                      }}
+                    >
+                      {showPassword ? "Hide" : "Show"}
+                    </button>
+                  </div>
+                </div>
+
+                <div className={styles.field}>
+                  <label>Confirm Password</label>
+
+                  <div
+                    style={{
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <input
+                      type={
+                        showConfirmPassword
+                          ? "text"
+                          : "password"
+                      }
+                      value={form.confirmPassword}
+                      onChange={(e) =>
+                        updateField(
+                          "confirmPassword",
+                          e.target.value
+                        )
+                      }
+                      placeholder="Re-enter your password"
+                      style={{
+                        width: "100%",
+                        paddingRight: "75px",
+                      }}
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPassword(
+                          !showConfirmPassword
+                        )
+                      }
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        border: "none",
+                        background: "transparent",
+                        cursor: "pointer",
+                        color: "#166534",
+                        fontSize: "13px",
+                      }}
+                    >
+                      {showConfirmPassword
+                        ? "Hide"
+                        : "Show"}
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+              <div
+                style={{
+                  marginTop: "24px",
+                  padding: "16px",
+                  borderRadius: "12px",
+                  background: "#f8fafc",
+                  border: "1px solid #e2e8f0",
+                }}
+              >
+                <strong>Registration Summary</strong>
+
+                <p>
+                  <b>Name:</b> {form.fullName}
+                </p>
+
+                <p>
+                  <b>Mobile:</b> {form.mobileNumber}
+                </p>
+
+                <p>
+                  <b>Vehicle:</b> {form.vehicleNumber}
+                </p>
+
+                <p>
+                  <b>Vehicle Type:</b> {form.vehicleType}
+                </p>
+
+                <p>
+                  <b>Experience:</b> {form.experience}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* ACTION BUTTONS */}
+          <div className={styles.actions}>
+
+            {currentStep > 1 && (
+              <button
+                type="button"
+                className={styles.backButton}
+                onClick={handleBack}
+              >
+                Back
+              </button>
+            )}
+
+            <button
+              type="button"
+              className={styles.saveButton}
+              onClick={handleSaveAndExit}
+            >
+              Save & Exit
+            </button>
+
+            {currentStep < 4 ? (
+              <button
+                type="button"
+                className={styles.nextButton}
+                onClick={handleNext}
+              >
+                Continue
+              </button>
+            ) : (
+              <button
+                type="button"
+                className={styles.nextButton}
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+              >
+                {isSubmitting
+                  ? "Creating Account..."
+                  : "Create Driver Account"}
+              </button>
+            )}
+
+          </div>
+        </main>
+
+        {/* RIGHT PANEL */}
         <aside className={styles.rightPanel}>
           <img
             src="/images/driver-road.png"
-            alt="Driver transporting agricultural produce"
+            alt="Driver on agricultural transport route"
             className={styles.rightImage}
           />
 
           <h2 className={styles.rightTitle}>
-            Drive your way
+            Move Fresh Produce.
             <br />
-            to a better tomorrow.
+            Make an Impact.
           </h2>
 
           <p className={styles.rightDescription}>
-            Join AgriOptix as a driver or transporter and
-            help farmers get their produce to market safely,
-            on time, and with trust.
+            Every successful delivery helps farmers reduce losses,
+            reach buyers faster, and earn better returns.
           </p>
 
           <h3 className={styles.benefitsTitle}>
-            Why partner with us?
+            Driver Benefits
           </h3>
 
           <div className={styles.benefit}>
-            <div className={styles.benefitIcon}>
-              ✓
-            </div>
+            <div className={styles.benefitIcon}>✓</div>
 
             <div>
               <div className={styles.benefitTitle}>
-                Steady demand
+                Smart Matching
               </div>
 
               <div className={styles.benefitText}>
-                Get access to transport opportunities.
+                Get transport opportunities that match your
+                vehicle and route.
               </div>
             </div>
           </div>
 
           <div className={styles.benefit}>
-            <div className={styles.benefitIcon}>
-              ₹
-            </div>
+            <div className={styles.benefitIcon}>✓</div>
 
             <div>
               <div className={styles.benefitTitle}>
-                On-time payments
+                Less Empty Travel
               </div>
 
               <div className={styles.benefitText}>
-                Transparent and milestone-based payments.
+                Optimized routes can reduce unnecessary travel.
               </div>
             </div>
           </div>
 
           <div className={styles.benefit}>
-            <div className={styles.benefitIcon}>
-              📄
-            </div>
+            <div className={styles.benefitIcon}>✓</div>
 
             <div>
               <div className={styles.benefitTitle}>
-                Easy onboarding
+                Transparent Work
               </div>
 
               <div className={styles.benefitText}>
-                Complete registration with minimal paperwork.
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.benefit}>
-            <div className={styles.benefitIcon}>
-              📍
-            </div>
-
-            <div>
-              <div className={styles.benefitTitle}>
-                GPS tracking
-              </div>
-
-              <div className={styles.benefitText}>
-                Support safe and secure deliveries.
+                See pickup, delivery, and trip information clearly.
               </div>
             </div>
           </div>
         </aside>
-      </section>
+      </div>
 
       <footer className={styles.footer}>
-        <span>
-          © AgriOptix — AI-Powered Farm-to-Market Platform
-        </span>
-
-        <span>
-          Farmers · Buyers · Transporters · Sustainable Tomorrow
-        </span>
+        © 2026 AgriOptix. Intelligent Farm-to-Market Optimization.
       </footer>
-    </main>
+    </div>
   );
 }

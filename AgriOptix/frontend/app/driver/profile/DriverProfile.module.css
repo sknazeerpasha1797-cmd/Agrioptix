@@ -1,0 +1,517 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7f8;
+  color: #17212b;
+  padding-bottom: 100px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.backgroundGlow {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  top: -250px;
+  right: -180px;
+  border-radius: 50%;
+  background: rgba(0, 168, 107, 0.08);
+  pointer-events: none;
+}
+
+.header {
+  height: 78px;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #e6eaed;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 18px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(14px);
+}
+
+.backButton {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid #e1e7ea;
+  background: white;
+  font-size: 22px;
+  cursor: pointer;
+  color: #24313b;
+}
+
+.brandBlock {
+  flex: 1;
+}
+
+.brand {
+  font-size: 21px;
+  font-weight: 800;
+  color: #00a86b;
+}
+
+.subtitle {
+  color: #7b8790;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.stepBadge {
+  padding: 8px 13px;
+  border-radius: 20px;
+  background: #eaf8f2;
+  color: #008658;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.content {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 32px 22px;
+}
+
+/* HERO */
+
+.profileHero {
+  background: white;
+  border: 1px solid #e6ebed;
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  box-shadow: 0 10px 30px rgba(24, 43, 54, 0.05);
+}
+
+.avatar {
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00a86b, #007e52);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 800;
+  box-shadow: 0 8px 20px rgba(0, 168, 107, 0.22);
+}
+
+.profileIdentity {
+  flex: 1;
+}
+
+.eyebrow {
+  color: #8b969e;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.profileIdentity h1 {
+  margin: 5px 0 3px;
+  font-size: 27px;
+  line-height: 1.2;
+}
+
+.profileIdentity p {
+  margin: 0;
+  color: #68757e;
+  font-size: 14px;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #ecfaf4;
+  color: #008658;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #00a86b;
+}
+
+.editButton {
+  border: 1px solid #d8e3df;
+  background: white;
+  color: #008658;
+  padding: 11px 16px;
+  border-radius: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.editButton:hover {
+  background: #ecfaf4;
+}
+
+/* MESSAGE */
+
+.successMessage {
+  margin-top: 16px;
+  padding: 13px 16px;
+  border-radius: 12px;
+  background: #eaf8f2;
+  border: 1px solid #ccefe0;
+  color: #007c50;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.successMessage span {
+  margin-right: 8px;
+}
+
+/* SECTIONS */
+
+.section {
+  margin-top: 20px;
+  background: white;
+  border: 1px solid #e6ebed;
+  border-radius: 18px;
+  padding: 24px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.sectionLabel {
+  color: #00a86b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.sectionHeader h2,
+.accountSection h2 {
+  margin: 5px 0 0;
+  font-size: 19px;
+}
+
+.sectionIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #f1faf6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.field {
+  background: #f8fafb;
+  border: 1px solid #edf0f2;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.field label {
+  display: block;
+  color: #89939b;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+
+.fieldValue {
+  color: #24313b;
+  font-size: 14px;
+  font-weight: 650;
+  min-height: 20px;
+}
+
+.field input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d7e1df;
+  border-radius: 8px;
+  padding: 9px 10px;
+  outline: none;
+  font-size: 14px;
+  background: white;
+  color: #17212b;
+}
+
+.field input:focus {
+  border-color: #00a86b;
+  box-shadow: 0 0 0 3px rgba(0, 168, 107, 0.09);
+}
+
+/* SAVE */
+
+.savePanel {
+  margin-top: 20px;
+  padding: 20px;
+  background: #effaf5;
+  border: 1px solid #d2f0e2;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.savePanel strong {
+  font-size: 14px;
+}
+
+.savePanel p {
+  margin: 5px 0 0;
+  color: #708078;
+  font-size: 12px;
+}
+
+.saveButton {
+  border: none;
+  background: #00a86b;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.saveButton:hover {
+  background: #008d5a;
+}
+
+/* ACCOUNT */
+
+.accountSection {
+  margin-top: 20px;
+  background: #17212b;
+  color: white;
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.accountSection .sectionLabel {
+  color: #66d9ad;
+}
+
+.accountSection h2 {
+  color: white;
+}
+
+.accountSection p {
+  color: #aeb8be;
+  font-size: 13px;
+  margin: 7px 0 0;
+}
+
+.accountActions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.supportButton,
+.logoutButton {
+  border-radius: 10px;
+  padding: 11px 15px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.supportButton {
+  background: #00a86b;
+  color: white;
+  border: 1px solid #00a86b;
+}
+
+.supportButton span {
+  margin-left: 8px;
+}
+
+.logoutButton {
+  background: transparent;
+  color: #ffb4a8;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* DEMO */
+
+.demoNote {
+  margin: 18px 2px 0;
+  color: #7e8a91;
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.demoNote span {
+  display: inline-block;
+  margin-right: 7px;
+  padding: 3px 6px;
+  border-radius: 5px;
+  background: #eef1f2;
+  color: #66737a;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+/* NAV */
+
+.bottomNav {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  width: min(680px, calc(100% - 28px));
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid #e1e7e9;
+  box-shadow: 0 12px 35px rgba(23, 33, 43, 0.13);
+  border-radius: 18px;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+}
+
+.navItem {
+  border: none;
+  background: transparent;
+  color: #89939a;
+  padding: 8px 4px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.navIcon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.navActive {
+  color: #00a86b;
+  background: #ecfaf4;
+}
+
+/* LOADING */
+
+.loadingPage {
+  min-height: 100vh;
+  background: #f5f7f8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #68757e;
+  gap: 12px;
+}
+
+.loader {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #dce7e3;
+  border-top-color: #00a86b;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
+  .header {
+    padding: 0 16px;
+    height: 70px;
+  }
+
+  .content {
+    padding: 20px 14px 30px;
+  }
+
+  .profileHero {
+    padding: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 23px;
+  }
+
+  .profileIdentity h1 {
+    font-size: 22px;
+  }
+
+  .editButton {
+    width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 18px;
+  }
+
+  .savePanel,
+  .accountSection {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .accountActions {
+    flex-direction: column;
+  }
+
+  .supportButton,
+  .logoutButton,
+  .saveButton {
+    width: 100%;
+  }
+
+  .bottomNav {
+    bottom: 8px;
+  }
+}
