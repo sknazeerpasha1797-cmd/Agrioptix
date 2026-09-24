@@ -1,0 +1,596 @@
+.page {
+  min-height: 100vh;
+  background: #f5f8f7;
+  color: #17231f;
+  padding-bottom: 100px;
+}
+
+.header {
+  min-height: 76px;
+  padding: 16px 6%;
+  background: #ffffff;
+  border-bottom: 1px solid #e7eeeb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  color: #00a86b;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.moduleTitle {
+  margin-top: 2px;
+  color: #697772;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #7d8984;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #e4f6ee;
+  color: #008454;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+.content {
+  width: min(1050px, 92%);
+  margin: 25px auto;
+}
+
+.heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.eyebrow,
+.label {
+  display: block;
+  margin: 0 0 5px;
+  color: #84908b;
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: 800;
+}
+
+.heading h1 {
+  margin: 0;
+  font-size: clamp(27px, 4vw, 36px);
+  letter-spacing: -1px;
+}
+
+.heading p {
+  margin: 8px 0 0;
+  color: #74807b;
+  font-size: 14px;
+}
+
+.paidBadge {
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: #e4f8ef;
+  color: #008454;
+  font-size: 9px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.paidBadge span {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #00a86b;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Total */
+
+.totalCard {
+  padding: 23px;
+  border-radius: 18px;
+  background: #17231f;
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(23, 35, 31, 0.14);
+}
+
+.totalTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.totalLabel {
+  color: #9daaa4;
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: 800;
+}
+
+.totalTop h2 {
+  margin: 5px 0 0;
+  font-size: clamp(36px, 6vw, 50px);
+  letter-spacing: -2px;
+}
+
+.totalTop p {
+  margin: 4px 0 0;
+  color: #a8b3ae;
+  font-size: 11px;
+}
+
+.moneyIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: #00a86b;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 31px;
+  font-weight: 900;
+}
+
+.totalMeta {
+  margin-top: 22px;
+  padding-top: 17px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.totalMeta span,
+.totalMeta strong {
+  display: block;
+}
+
+.totalMeta span {
+  color: #8e9b95;
+  font-size: 9px;
+}
+
+.totalMeta strong {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.green {
+  color: #50d49c !important;
+}
+
+/* Breakdown */
+
+.breakdownCard,
+.tripCard {
+  margin-top: 16px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #e5ede9;
+  border-radius: 16px;
+  box-shadow: 0 7px 24px rgba(23, 35, 31, 0.04);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.sectionHeader h2,
+.tripHeader h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.detailsToggle {
+  border: 1px solid #dce8e2;
+  border-radius: 9px;
+  background: #f5faf7;
+  color: #008454;
+  padding: 9px 12px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.earningList {
+  margin-top: 17px;
+}
+
+.earningRow {
+  padding: 14px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #edf1ef;
+}
+
+.earningIcon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: #f0f6f3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.earningInfo {
+  flex: 1;
+}
+
+.earningInfo strong,
+.earningInfo span,
+.earningInfo small {
+  display: block;
+}
+
+.earningInfo strong {
+  font-size: 13px;
+}
+
+.earningInfo span {
+  margin-top: 3px;
+  color: #7f8b86;
+  font-size: 10px;
+}
+
+.earningInfo small {
+  margin-top: 4px;
+  color: #a0aaa6;
+  font-size: 9px;
+}
+
+.amount {
+  color: #008454;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.divider {
+  margin-top: 3px;
+  border-top: 2px solid #17231f;
+}
+
+.totalRow {
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.totalRow span {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.totalRow strong {
+  color: #00a86b;
+  font-size: 20px;
+}
+
+/* Trip */
+
+.tripHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.completedBadge {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #e4f8ef;
+  color: #008454;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.tripRoute {
+  margin-top: 19px;
+}
+
+.routePoint {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.routePoint span,
+.routePoint strong {
+  display: block;
+}
+
+.routePoint span {
+  color: #89938f;
+  font-size: 9px;
+}
+
+.routePoint strong {
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+.startDot,
+.endDot {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.startDot {
+  background: #00a86b;
+}
+
+.endDot {
+  background: #ff7a00;
+}
+
+.routeLine {
+  width: 2px;
+  height: 25px;
+  margin-left: 5px;
+  background: #dce6e1;
+}
+
+.tripStats {
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid #edf1ef;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.tripStats span,
+.tripStats strong {
+  display: block;
+}
+
+.tripStats span {
+  color: #89938f;
+  font-size: 9px;
+}
+
+.tripStats strong {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+/* Payment */
+
+.paymentCard {
+  margin-top: 16px;
+  padding: 19px;
+  border-radius: 16px;
+  background: #e9f8f1;
+  border: 1px solid #cceee0;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.paymentIcon {
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #00a86b;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.paymentCard > div:nth-child(2) {
+  flex: 1;
+}
+
+.paymentCard span {
+  color: #008454;
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 900;
+}
+
+.paymentCard h2 {
+  margin: 3px 0;
+  font-size: 17px;
+}
+
+.paymentCard p {
+  margin: 0;
+  color: #64766d;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.paymentAmount {
+  color: #008454;
+  font-size: 17px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+/* Actions */
+
+.actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  min-height: 48px;
+  border-radius: 11px;
+  padding: 0 18px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.historyButton {
+  flex: 1;
+  border: 1px solid #d9e5df;
+  background: #ffffff;
+  color: #008454;
+}
+
+.homeButton {
+  flex: 1;
+  border: 0;
+  background: #00a86b;
+  color: #ffffff;
+}
+
+/* Demo */
+
+.demoNote {
+  margin-top: 16px;
+  padding: 13px 15px;
+  border: 1px solid #f3e6d8;
+  background: #fffaf4;
+  border-radius: 12px;
+}
+
+.demoNote span {
+  color: #d96500;
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 900;
+}
+
+.demoNote p {
+  margin: 5px 0 0;
+  color: #817970;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* Bottom navigation */
+
+.bottomNav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  height: 70px;
+  padding: 7px 8%;
+  background: rgba(255, 255, 255, 0.97);
+  border-top: 1px solid #e5ece9;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  backdrop-filter: blur(12px);
+}
+
+.bottomNav button {
+  border: 0;
+  background: transparent;
+  color: #8a9691;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+}
+
+.bottomNav button span {
+  font-size: 20px;
+}
+
+.bottomNav button small {
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.bottomNav .navActive {
+  color: #00a86b;
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+  .content {
+    width: 94%;
+  }
+
+  .heading {
+    flex-direction: column;
+  }
+
+  .paidBadge {
+    align-self: flex-start;
+  }
+
+  .totalMeta {
+    grid-template-columns: 1fr;
+  }
+
+  .totalTop h2 {
+    font-size: 39px;
+  }
+
+  .moneyIcon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .tripStats {
+    grid-template-columns: 1fr;
+  }
+
+  .paymentCard {
+    align-items: flex-start;
+  }
+
+  .paymentAmount {
+    display: none;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  .bottomNav {
+    padding-left: 3%;
+    padding-right: 3%;
+  }
+}
