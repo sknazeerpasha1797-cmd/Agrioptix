@@ -1,0 +1,906 @@
+/* ===== STEP 1: CENTER THE SIGN-IN PAGE ===== */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Main sign-in page wrapper */
+.signin-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Main sign-in card */
+.signin-container,
+.signin-wrapper,
+.auth-container,
+.auth-wrapper {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+}
+* {
+  box-sizing: border-box;
+}
+
+.signin-page {
+  min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      #e5f6ff 0%,
+      transparent 32%
+    ),
+    #f4f8fb;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+
+/* =====================================================
+   MAIN CARD
+===================================================== */
+
+.signin-container {
+  width: 1120px;
+  max-width: 100%;
+
+  min-height: 680px;
+
+  display: grid;
+
+  grid-template-columns: 43% 57%;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 25px 70px
+    rgba(0, 72, 125, 0.16);
+}
+
+
+/* =====================================================
+   LEFT BLUE PANEL
+===================================================== */
+
+.signin-left {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 48px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #079edc 0%,
+      #087fd0 50%,
+      #0068bf 100%
+    );
+
+  overflow: hidden;
+}
+
+.signin-left::before {
+  content: "";
+
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  right: -220px;
+  bottom: -190px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+}
+
+.signin-left::after {
+  content: "";
+
+  position: absolute;
+
+  width: 170px;
+  height: 170px;
+
+  left: -90px;
+  top: 230px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.05);
+}
+
+
+/* =====================================================
+   BRAND
+===================================================== */
+
+.brand {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+.brand-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  color: #ffffff;
+
+  font-size: 25px;
+
+  background:
+    rgba(255, 255, 255, 0.16);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.16);
+}
+
+.brand-name {
+  font-size: 23px;
+
+  font-weight: 800;
+
+  letter-spacing: -0.5px;
+}
+
+.brand-tagline {
+  margin-top: 3px;
+
+  font-size: 10px;
+
+  opacity: 0.78;
+}
+
+
+/* =====================================================
+   LEFT CONTENT
+===================================================== */
+
+.left-content {
+  position: relative;
+
+  z-index: 2;
+
+  margin-top: 35px;
+}
+
+.portal-label {
+  margin-bottom: 18px;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color:
+    rgba(255, 255, 255, 0.75);
+}
+
+.left-content h1 {
+  margin: 0 0 20px;
+
+  font-size: 46px;
+
+  line-height: 1.04;
+
+  letter-spacing: -1.8px;
+}
+
+.left-content h1 span {
+  font-weight: 400;
+}
+
+.left-description {
+  max-width: 390px;
+
+  margin: 0;
+
+  color:
+    rgba(255, 255, 255, 0.86);
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+
+/* =====================================================
+   FEATURES
+===================================================== */
+
+.features {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 23px;
+
+  margin-top: 40px;
+}
+
+.feature {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 13px;
+}
+
+.feature-icon {
+  width: 32px;
+  height: 32px;
+
+  min-width: 32px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.15);
+
+  font-size: 14px;
+
+  font-weight: 800;
+}
+
+.feature h3 {
+  margin: 0 0 5px;
+
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+.feature p {
+  margin: 0;
+
+  color:
+    rgba(255, 255, 255, 0.72);
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   COPYRIGHT
+===================================================== */
+
+.copyright {
+  position: relative;
+
+  z-index: 2;
+
+  color:
+    rgba(255, 255, 255, 0.58);
+
+  font-size: 10px;
+}
+
+
+/* =====================================================
+   RIGHT PANEL
+===================================================== */
+
+.signin-right {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  padding: 58px 64px;
+
+  background: #ffffff;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.signin-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  margin-bottom: 34px;
+}
+
+.form-label {
+  margin-bottom: 8px;
+
+  color: #0784d1;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+.signin-header h2 {
+  margin: 0;
+
+  color: #14283b;
+
+  font-size: 34px;
+
+  font-weight: 800;
+
+  letter-spacing: -1px;
+}
+
+.signin-header p {
+  margin: 8px 0 0;
+
+  color: #82909e;
+
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   USER ICON
+===================================================== */
+
+.user-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 13px;
+
+  color: #0784d1;
+
+  background: #edf8ff;
+
+  border:
+    1px solid
+    #d9effb;
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.form-group {
+  width: 100%;
+
+  margin-bottom: 22px;
+}
+
+.form-group > label,
+.password-heading label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #34495b;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.form-group label span {
+  color: #0784d1;
+}
+
+
+/* =====================================================
+   PASSWORD HEADER
+===================================================== */
+
+.password-heading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 8px;
+}
+
+.password-heading label {
+  margin-bottom: 0;
+}
+
+.forgot-button {
+  padding: 3px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #0784d1;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.forgot-button:hover {
+  text-decoration: underline;
+}
+
+
+/* =====================================================
+   INPUT
+===================================================== */
+
+.input-wrapper {
+  position: relative;
+
+  width: 100%;
+}
+
+.input-wrapper svg {
+  position: absolute;
+
+  left: 14px;
+
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  color: #8a99a7;
+
+  pointer-events: none;
+}
+
+.input-wrapper input {
+  width: 100%;
+
+  height: 50px;
+
+  padding:
+    0 15px 0 45px;
+
+  border:
+    1px solid
+    #dce5ec;
+
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  color: #26394b;
+
+  font-size: 13px;
+
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.input-wrapper input::placeholder {
+  color: #a5b0ba;
+}
+
+.input-wrapper input:focus {
+  border-color: #078edc;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(7, 142, 220, 0.09);
+}
+
+
+/* =====================================================
+   SHOW PASSWORD
+===================================================== */
+
+.show-button {
+  position: absolute;
+
+  right: 11px;
+
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  padding: 4px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #0784d1;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.show-button:hover {
+  text-decoration: underline;
+}
+
+
+/* =====================================================
+   REMEMBER ME
+===================================================== */
+
+.remember-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin:
+    -2px 0 19px;
+
+  color: #697b8c;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.remember-row input {
+  width: 16px;
+  height: 16px;
+
+  margin: 0;
+
+  accent-color: #078edc;
+
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   MESSAGES
+===================================================== */
+
+.message {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  width: 100%;
+
+  margin-bottom: 18px;
+
+  padding: 12px 14px;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  line-height: 1.4;
+}
+
+.message-icon {
+  width: 21px;
+  height: 21px;
+
+  min-width: 21px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 11px;
+
+  font-weight: 800;
+}
+
+
+/* ERROR */
+
+.error-message {
+  color: #b42323;
+
+  background: #fff2f2;
+
+  border:
+    1px solid
+    #ffd3d3;
+}
+
+.error-message .message-icon {
+  color: #ffffff;
+
+  background: #d83b3b;
+}
+
+
+/* SUCCESS */
+
+.success-message {
+  color: #167847;
+
+  background: #effcf5;
+
+  border:
+    1px solid
+    #c6ecd7;
+}
+
+.success-message .message-icon {
+  color: #ffffff;
+
+  background: #20a464;
+}
+
+
+/* =====================================================
+   SIGN IN BUTTON
+===================================================== */
+
+.signin-button {
+  width: 100%;
+
+  height: 51px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      90deg,
+      #078fdf,
+      #006fc9
+    );
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 9px 22px
+    rgba(0, 126, 207, 0.22);
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    opacity 0.2s;
+}
+
+.signin-button:hover {
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 12px 28px
+    rgba(0, 126, 207, 0.29);
+}
+
+.signin-button:active {
+  transform:
+    translateY(0);
+}
+
+.signin-button:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+.arrow {
+  font-size: 19px;
+
+  line-height: 1;
+}
+
+
+/* =====================================================
+   CREATE ACCOUNT
+===================================================== */
+
+.create-account {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  margin-top: 22px;
+
+  color: #788797;
+
+  font-size: 13px;
+}
+
+.create-link {
+  color: #007bd0;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.create-link:hover {
+  color: #005fa3;
+
+  text-decoration: underline;
+}
+
+
+/* =====================================================
+   SECURITY
+===================================================== */
+
+.security-note {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  margin-top: 27px;
+
+  color: #96a2ad;
+
+  font-size: 10px;
+}
+
+.security-note p {
+  margin: 0;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .signin-page {
+    padding: 15px;
+  }
+
+  .signin-container {
+    grid-template-columns: 1fr;
+
+    min-height: auto;
+  }
+
+  .signin-left {
+    display: none;
+  }
+
+  .signin-right {
+    padding: 45px 35px;
+  }
+}
+
+
+@media (max-width: 500px) {
+
+  .signin-page {
+    padding: 8px;
+  }
+
+  .signin-container {
+    border-radius: 16px;
+  }
+
+  .signin-right {
+    padding: 35px 22px;
+  }
+
+  .signin-header h2 {
+    font-size: 29px;
+  }
+
+  .user-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .create-account {
+    flex-direction: column;
+
+    gap: 3px;
+  }
+}

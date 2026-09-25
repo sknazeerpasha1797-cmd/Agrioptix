@@ -1,613 +1,735 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import "./buyer.css";
 
-type BuyerForm = {
-  ownerName: string;
-  mobile: string;
-  email: string;
-  language: string;
-  location: string;
-  businessName: string;
-  businessType: string;
-  crops: string;
-};
-
-const steps = [
-  "Basic Details",
-  "Business",
-  "Procurement",
-  "Review",
-];
-
 export default function BuyerOnboarding() {
-  const router = useRouter();
+  const [fullName, setFullName] = useState("");
+  const [company, setCompany] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [location, setLocation] = useState("");
 
-  const [step, setStep] = useState(1);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] =
+    useState("");
+
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
+
+  const [agree, setAgree] = useState(false);
+
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [form, setForm] = useState<BuyerForm>({
-    ownerName: "",
-    mobile: "",
-    email: "",
-    language: "English",
-    location: "",
-    businessName: "",
-    businessType: "",
-    crops: "",
-  });
 
-  function update(field: keyof BuyerForm, value: string) {
-    setForm((previous) => ({
-      ...previous,
-      [field]: value,
-    }));
+  // =====================================================
+  // CREATE BUYER ACCOUNT
+  // =====================================================
 
+  const createBuyerAccount = () => {
     setError("");
-  }
+    setSuccess("");
 
-  function validate() {
-    if (step === 1) {
-      if (!form.ownerName.trim()) {
-        setError("Please enter your full name.");
-        return false;
-      }
-
-      if (!/^\d{10}$/.test(form.mobile)) {
-        setError("Please enter a valid 10 digit mobile number.");
-        return false;
-      }
-
-      if (!form.location.trim()) {
-        setError("Please enter your location.");
-        return false;
-      }
-    }
-
-    if (step === 2) {
-      if (!form.businessName.trim()) {
-        setError("Please enter your business name.");
-        return false;
-      }
-
-      if (!form.businessType) {
-        setError("Please select your business type.");
-        return false;
-      }
-    }
-
-    if (step === 3) {
-      if (!form.crops.trim()) {
-        setError("Please enter the crops or produce you procure.");
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  function nextStep() {
-    if (!validate()) return;
-
-    if (step < 4) {
-      setStep((current) => current + 1);
+    // Full name
+    if (!fullName.trim()) {
+      setError("Please enter your full name.");
       return;
     }
 
-    localStorage.setItem("buyerProfile", JSON.stringify(form));
-
-    router.push("/buyer/home");
-  }
-
-  function previousStep() {
-    setError("");
-
-    if (step > 1) {
-      setStep((current) => current - 1);
+    // Company
+    if (!company.trim()) {
+      setError("Please enter your company or business name.");
+      return;
     }
-  }
+
+    // Email
+    if (!email.trim()) {
+      setError("Please enter your email address.");
+      return;
+    }
+
+    const emailPattern =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email.trim())) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    // Phone
+    if (!phone.trim()) {
+      setError("Please enter your phone number.");
+      return;
+    }
+
+    const cleanPhone = phone.replace(/\D/g, "");
+
+    if (cleanPhone.length < 10) {
+      setError("Please enter a valid phone number.");
+      return;
+    }
+
+    // Location
+    if (!location.trim()) {
+      setError("Please enter your business location.");
+      return;
+    }
+
+    // Password
+    if (!password) {
+      setError("Please create a password.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError(
+        "Password must contain at least 8 characters."
+      );
+      return;
+    }
+
+    // Confirm password
+    if (!confirmPassword) {
+      setError("Please confirm your password.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    // Terms
+    if (!agree) {
+      setError(
+        "Please agree to the Terms & Conditions and Privacy Policy."
+      );
+      return;
+    }
+
+    setLoading(true);
+
+    // =====================================================
+    // SAVE ACCOUNT
+    // =====================================================
+
+    const buyerAccount = {
+      fullName: fullName.trim(),
+      company: company.trim(),
+      email: email.trim().toLowerCase(),
+      phone: cleanPhone,
+      location: location.trim(),
+      password: password,
+      createdAt: new Date().toISOString(),
+      role: "buyer",
+    };
+
+    try {
+      localStorage.setItem(
+        "buyerAccount",
+        JSON.stringify(buyerAccount)
+      );
+
+      // Make sure previous login is cleared
+      localStorage.removeItem("buyerLoggedIn");
+      localStorage.removeItem("buyerEmail");
+
+      setSuccess(
+        "Your buyer account has been created successfully."
+      );
+
+      // =====================================================
+      // GO TO SIGN IN
+      // =====================================================
+
+      setTimeout(() => {
+        window.location.assign("/buyer/signin");
+      }, 700);
+
+    } catch (error) {
+      console.error(error);
+
+      setLoading(false);
+
+      setError(
+        "Unable to create the account. Please try again."
+      );
+    }
+  };
+
+
+  // =====================================================
+  // SIGN IN NAVIGATION
+  // =====================================================
+
+  const goToSignIn = () => {
+    window.location.assign("/buyer/signin");
+  };
+
+
+  // =====================================================
+  // PAGE
+  // =====================================================
 
   return (
-    <div className="buyer-page">
+    <main className="buyer-page">
 
-      {/* LEFT BRAND PANEL */}
+      <div className="buyer-container">
 
-      <aside className="buyer-left">
-        <div className="brand">
-          <div className="brand-logo">A</div>
-          <span>AgriOptix</span>
-        </div>
 
-        <div className="left-content">
-          <p className="eyebrow">BUYER REGISTRATION</p>
+        {/* =================================================
+            LEFT BLUE PANEL
+        ================================================= */}
 
-          <h1>
-            Source fresh.
-            <br />
-            <span>Buy smarter.</span>
-          </h1>
+        <section className="buyer-left">
 
-          <p className="left-description">
-            Connect with farmers, discover fresh agricultural produce
-            and manage your procurement through AgriOptix.
-          </p>
+          <div className="buyer-brand">
 
-          <div className="left-features">
-            <div>
-              <strong>✓ Verified farmers</strong>
-              <p>Connect with trusted agricultural suppliers.</p>
+            <div className="buyer-brand-icon">
+              ✦
             </div>
 
             <div>
-              <strong>✓ Smart procurement</strong>
-              <p>Find produce according to your requirements.</p>
+
+              <div className="buyer-brand-name">
+                AgriOptix
+              </div>
+
+              <div className="buyer-brand-subtitle">
+                Farm-to-Market Intelligence
+              </div>
+
             </div>
-
-            <div>
-              <strong>✓ Connected logistics</strong>
-              <p>Keep sourcing and delivery organized.</p>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      {/* CENTER */}
-
-      <main className="buyer-main">
-
-        <div className="registration-container">
-
-          <div className="top-header">
-            <div>
-              <p className="small-label">BUYER PORTAL</p>
-
-              <h2>Create your buyer account</h2>
-            </div>
-
-            <button
-              className="login-link"
-              type="button"
-              onClick={() => router.push("/buyer/login")}
-            >
-              Already registered? <b>Login</b>
-            </button>
-          </div>
-
-          {/* STEPS */}
-
-          <div className="steps">
-
-            {steps.map((label, index) => {
-              const number = index + 1;
-
-              return (
-                <div className="step-item" key={label}>
-
-                  <div
-                    className={`step-circle ${
-                      step >= number ? "active" : ""
-                    }`}
-                  >
-                    {step > number ? "✓" : number}
-                  </div>
-
-                  <span
-                    className={
-                      step >= number ? "step-text active" : "step-text"
-                    }
-                  >
-                    {label}
-                  </span>
-
-                  {number < steps.length && (
-                    <div
-                      className={
-                        step > number
-                          ? "step-line active"
-                          : "step-line"
-                      }
-                    />
-                  )}
-
-                </div>
-              );
-            })}
 
           </div>
 
-          {/* FORM CARD */}
 
-          <section className="registration-card">
+          <div className="buyer-left-content">
 
-            <div className="card-header">
+            <div className="buyer-eyebrow">
+              BUYER ONBOARDING
+            </div>
+
+            <h1>
+              Source smarter.
+              <br />
+              <span>Buy better.</span>
+            </h1>
+
+            <p>
+              Join AgriOptix and connect with
+              reliable agricultural suppliers,
+              quality produce and smarter
+              procurement.
+            </p>
+
+
+            {/* FEATURE 1 */}
+
+            <div className="buyer-feature">
+
+              <div className="buyer-feature-number">
+                01
+              </div>
 
               <div>
-                <span className="step-count">
-                  STEP {step} OF 4
-                </span>
 
                 <h3>
-                  {step === 1 && "Tell us about you"}
-                  {step === 2 && "Tell us about your business"}
-                  {step === 3 && "Your procurement requirements"}
-                  {step === 4 && "Review your information"}
+                  Verified Suppliers
                 </h3>
 
                 <p>
-                  {step === 1 &&
-                    "Enter your basic contact information."}
-
-                  {step === 2 &&
-                    "Tell us about the business you represent."}
-
-                  {step === 3 &&
-                    "Tell us what agricultural produce you purchase."}
-
-                  {step === 4 &&
-                    "Check your details before completing registration."}
+                  Discover trusted agricultural
+                  producers.
                 </p>
-              </div>
 
-              <div className="secure-badge">
-                🔒 Secure
               </div>
 
             </div>
 
-            {/* STEP 1 */}
 
-            {step === 1 && (
-              <div className="form-grid">
+            {/* FEATURE 2 */}
 
-                <Field
-                  label="Owner / Contact Name"
-                  required
-                  value={form.ownerName}
-                  placeholder="Enter your full name"
-                  onChange={(value) =>
-                    update("ownerName", value)
-                  }
-                />
+            <div className="buyer-feature">
 
-                <Field
-                  label="Mobile Number"
-                  required
-                  value={form.mobile}
-                  placeholder="10 digit mobile number"
-                  onChange={(value) =>
-                    update("mobile", value.replace(/\D/g, "").slice(0, 10))
-                  }
-                />
+              <div className="buyer-feature-number">
+                02
+              </div>
 
-                <Field
-                  label="Email Address"
-                  value={form.email}
-                  placeholder="you@example.com"
-                  onChange={(value) =>
-                    update("email", value)
-                  }
-                />
+              <div>
 
-                <div className="field">
-                  <label>Preferred Language</label>
+                <h3>
+                  Smart Procurement
+                </h3>
 
-                  <select
-                    value={form.language}
-                    onChange={(event) =>
-                      update("language", event.target.value)
-                    }
-                  >
-                    <option>English</option>
-                    <option>Telugu</option>
-                    <option>Hindi</option>
-                  </select>
-                </div>
-
-                <Field
-                  label="Current Location"
-                  required
-                  value={form.location}
-                  placeholder="City / town / district"
-                  full
-                  onChange={(value) =>
-                    update("location", value)
-                  }
-                />
+                <p>
+                  Find produce based on your
+                  exact requirements.
+                </p>
 
               </div>
-            )}
 
-            {/* STEP 2 */}
+            </div>
 
-            {step === 2 && (
-              <div className="form-grid">
 
-                <Field
-                  label="Business Name"
-                  required
-                  value={form.businessName}
-                  placeholder="Example: Hyderabad Fresh Mart"
-                  full
-                  onChange={(value) =>
-                    update("businessName", value)
+            {/* FEATURE 3 */}
+
+            <div className="buyer-feature">
+
+              <div className="buyer-feature-number">
+                03
+              </div>
+
+              <div>
+
+                <h3>
+                  Track Every Order
+                </h3>
+
+                <p>
+                  Manage sourcing and delivery
+                  in one place.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div className="buyer-left-footer">
+            © 2026 AgriOptix
+          </div>
+
+        </section>
+
+
+        {/* =================================================
+            RIGHT FORM
+        ================================================= */}
+
+        <section className="buyer-right">
+
+          <div className="buyer-form-header">
+
+            <div>
+
+              <div className="buyer-form-label">
+                CREATE ACCOUNT
+              </div>
+
+              <h2>
+                Buyer onboarding
+              </h2>
+
+              <p>
+                Tell us about yourself and your
+                business.
+              </p>
+
+            </div>
+
+
+            <div className="buyer-user-icon">
+              👤
+            </div>
+
+          </div>
+
+
+          {/* =================================================
+              SECTION 01
+          ================================================= */}
+
+          <div className="buyer-section-title">
+
+            <span>01</span>
+
+            <strong>
+              Personal & Business details
+            </strong>
+
+          </div>
+
+
+          <div className="buyer-grid">
+
+
+            {/* FULL NAME */}
+
+            <div className="buyer-field">
+
+              <label>
+                Full name <b>*</b>
+              </label>
+
+              <input
+                type="text"
+                placeholder="Enter your full name"
+                value={fullName}
+                onChange={(e) => {
+                  setFullName(e.target.value);
+                  setError("");
+                }}
+              />
+
+            </div>
+
+
+            {/* COMPANY */}
+
+            <div className="buyer-field">
+
+              <label>
+                Company / business name <b>*</b>
+              </label>
+
+              <input
+                type="text"
+                placeholder="Enter business name"
+                value={company}
+                onChange={(e) => {
+                  setCompany(e.target.value);
+                  setError("");
+                }}
+              />
+
+            </div>
+
+
+            {/* EMAIL */}
+
+            <div className="buyer-field">
+
+              <label>
+                Email address <b>*</b>
+              </label>
+
+              <input
+                type="email"
+                placeholder="name@company.com"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setError("");
+                }}
+              />
+
+            </div>
+
+
+            {/* PHONE */}
+
+            <div className="buyer-field">
+
+              <label>
+                Phone number <b>*</b>
+              </label>
+
+              <input
+                type="tel"
+                placeholder="+91 00000 00000"
+                value={phone}
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                  setError("");
+                }}
+              />
+
+            </div>
+
+
+            {/* LOCATION */}
+
+            <div className="buyer-field buyer-full">
+
+              <label>
+                Business location <b>*</b>
+              </label>
+
+              <input
+                type="text"
+                placeholder="City, State"
+                value={location}
+                onChange={(e) => {
+                  setLocation(e.target.value);
+                  setError("");
+                }}
+              />
+
+            </div>
+
+          </div>
+
+
+          {/* =================================================
+              SECTION 02
+          ================================================= */}
+
+          <div className="buyer-section-title buyer-security-title">
+
+            <span>02</span>
+
+            <strong>
+              Account security
+            </strong>
+
+          </div>
+
+
+          <div className="buyer-grid">
+
+
+            {/* PASSWORD */}
+
+            <div className="buyer-field">
+
+              <label>
+                Password <b>*</b>
+              </label>
+
+              <div className="buyer-password">
+
+                <input
+                  type={
+                    showPassword
+                      ? "text"
+                      : "password"
                   }
+                  placeholder="Create a password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setError("");
+                  }}
                 />
 
-                <div className="field">
-
-                  <label>
-                    Business Type <span>*</span>
-                  </label>
-
-                  <select
-                    value={form.businessType}
-                    onChange={(event) =>
-                      update(
-                        "businessType",
-                        event.target.value
-                      )
-                    }
-                  >
-                    <option value="">
-                      Select business type
-                    </option>
-
-                    <option>Retailer</option>
-                    <option>Wholesaler</option>
-                    <option>Supermarket</option>
-                    <option>Restaurant</option>
-                    <option>Food Processor</option>
-                    <option>Distributor</option>
-                    <option>Other</option>
-                  </select>
-
-                </div>
-
-                <div className="info-box">
-                  <strong>Why do we ask?</strong>
-
-                  <p>
-                    Your business type helps AgriOptix understand
-                    your procurement requirements.
-                  </p>
-                </div>
-
-              </div>
-            )}
-
-            {/* STEP 3 */}
-
-            {step === 3 && (
-              <div className="single-field">
-
-                <label>
-                  Produce / Crops You Procure <span>*</span>
-                </label>
-
-                <textarea
-                  value={form.crops}
-                  onChange={(event) =>
-                    update("crops", event.target.value)
-                  }
-                  placeholder="Example: Tomato, Onion, Potato, Chilli"
-                  rows={6}
-                />
-
-                <div className="helper">
-                  ✓ You can update these requirements later.
-                </div>
-
-              </div>
-            )}
-
-            {/* STEP 4 */}
-
-            {step === 4 && (
-              <div className="review-grid">
-
-                <Review
-                  label="Owner / Contact"
-                  value={form.ownerName}
-                />
-
-                <Review
-                  label="Mobile"
-                  value={form.mobile}
-                />
-
-                <Review
-                  label="Email"
-                  value={form.email || "Not provided"}
-                />
-
-                <Review
-                  label="Language"
-                  value={form.language}
-                />
-
-                <Review
-                  label="Location"
-                  value={form.location}
-                />
-
-                <Review
-                  label="Business"
-                  value={form.businessName}
-                />
-
-                <Review
-                  label="Business Type"
-                  value={form.businessType}
-                />
-
-                <Review
-                  label="Procurement"
-                  value={form.crops}
-                  full
-                />
-
-              </div>
-            )}
-
-            {/* ERROR */}
-
-            {error && (
-              <div className="error">
-                ⚠ {error}
-              </div>
-            )}
-
-            {/* BUTTONS */}
-
-            <div className="actions">
-
-              {step > 1 ? (
                 <button
-                  className="back-button"
-                  type="button"
-                  onClick={previousStep}
-                >
-                  ← Back
-                </button>
-              ) : (
-                <button
-                  className="back-button"
                   type="button"
                   onClick={() =>
-                    router.push("/buyer/login")
+                    setShowPassword(
+                      !showPassword
+                    )
                   }
                 >
-                  Already registered?
+                  {showPassword
+                    ? "Hide"
+                    : "Show"}
                 </button>
-              )}
+
+              </div>
+
+              <small>
+                Use at least 8 characters with
+                a combination of letters and numbers.
+              </small>
+
+            </div>
+
+
+            {/* CONFIRM PASSWORD */}
+
+            <div className="buyer-field">
+
+              <label>
+                Confirm password <b>*</b>
+              </label>
+
+              <div className="buyer-password">
+
+                <input
+                  type={
+                    showConfirmPassword
+                      ? "text"
+                      : "password"
+                  }
+                  placeholder="Re-enter your password"
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    setConfirmPassword(
+                      e.target.value
+                    );
+                    setError("");
+                  }}
+                />
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowConfirmPassword(
+                      !showConfirmPassword
+                    )
+                  }
+                >
+                  {showConfirmPassword
+                    ? "Hide"
+                    : "Show"}
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* =================================================
+              ERROR
+          ================================================= */}
+
+          {error && (
+
+            <div className="buyer-message buyer-error">
+
+              <span>!</span>
+
+              <p>
+                {error}
+              </p>
+
+            </div>
+
+          )}
+
+
+          {/* =================================================
+              SUCCESS
+          ================================================= */}
+
+          {success && (
+
+            <div className="buyer-message buyer-success">
+
+              <span>✓</span>
+
+              <p>
+                {success}
+              </p>
+
+            </div>
+
+          )}
+
+
+          {/* =================================================
+              TERMS
+          ================================================= */}
+
+          <label className="buyer-terms">
+
+            <input
+              type="checkbox"
+              checked={agree}
+              onChange={(e) => {
+                setAgree(e.target.checked);
+                setError("");
+              }}
+            />
+
+            <span>
+              I agree to the{" "}
 
               <button
-                className="continue-button"
                 type="button"
-                onClick={nextStep}
+                onClick={(e) =>
+                  e.preventDefault()
+                }
               >
-                {step === 4
-                  ? "Complete Registration"
-                  : "Continue →"}
+                Terms & Conditions
               </button>
 
-            </div>
+              {" "}and{" "}
 
-            <div className="privacy">
-              🔒 Your information is securely stored in your
-              AgriOptix buyer profile.
-            </div>
+              <button
+                type="button"
+                onClick={(e) =>
+                  e.preventDefault()
+                }
+              >
+                Privacy Policy
+              </button>
 
-          </section>
+            </span>
 
-        </div>
+          </label>
 
-      </main>
 
-      {/* RIGHT PANEL */}
+          {/* =================================================
+              CREATE ACCOUNT BUTTON
+          ================================================= */}
 
-      <aside className="buyer-right">
+          <button
+            type="button"
+            className="buyer-submit"
+            onClick={createBuyerAccount}
+            disabled={loading}
+          >
 
-        <div className="right-card">
+            <span>
+              {loading
+                ? "Creating account..."
+                : "Create Buyer Account"}
+            </span>
 
-          <div className="right-icon">
-            🛒
+            {!loading && (
+              <span className="buyer-submit-arrow">
+                →
+              </span>
+            )}
+
+          </button>
+
+
+          {/* =================================================
+              SIGN IN
+              THIS IS THE IMPORTANT PART
+          ================================================= */}
+
+          <div
+            className="buyer-signin-row"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "6px",
+              marginTop: "20px",
+              paddingBottom: "10px",
+            }}
+          >
+
+            <span>
+              Already have an account?
+            </span>
+
+            <button
+              type="button"
+              onClick={goToSignIn}
+              style={{
+                border: "none",
+                background: "transparent",
+                color: "#087fcf",
+                fontWeight: 800,
+                cursor: "pointer",
+                padding: 0,
+                fontSize: "inherit",
+              }}
+            >
+              Sign in
+            </button>
+
           </div>
 
-          <p className="small-label">
-            WHY AGRIOPTIX
-          </p>
 
-          <h2>
-            Make every
-            <br />
-            purchase <span>smarter.</span>
-          </h2>
+        </section>
 
-          <p className="right-description">
-            Build a reliable agricultural procurement network
-            with better supply visibility.
-          </p>
+      </div>
 
-          <div className="right-benefit">
-            <b>01</b>
-            <div>
-              <strong>Verified connections</strong>
-              <p>Connect with farmers and suppliers.</p>
-            </div>
-          </div>
-
-          <div className="right-benefit">
-            <b>02</b>
-            <div>
-              <strong>Better visibility</strong>
-              <p>Organize your procurement requirements.</p>
-            </div>
-          </div>
-
-          <div className="right-benefit">
-            <b>03</b>
-            <div>
-              <strong>Simple execution</strong>
-              <p>Keep sourcing and delivery connected.</p>
-            </div>
-          </div>
-
-        </div>
-
-      </aside>
-
-    </div>
-  );
-}
-
-function Field({
-  label,
-  required,
-  value,
-  placeholder,
-  onChange,
-  full = false,
-}: {
-  label: string;
-  required?: boolean;
-  value: string;
-  placeholder: string;
-  onChange: (value: string) => void;
-  full?: boolean;
-}) {
-  return (
-    <div className={`field ${full ? "full" : ""}`}>
-      <label>
-        {label} {required && <span>*</span>}
-      </label>
-
-      <input
-        value={value}
-        placeholder={placeholder}
-        onChange={(event) =>
-          onChange(event.target.value)
-        }
-      />
-    </div>
-  );
-}
-
-function Review({
-  label,
-  value,
-  full = false,
-}: {
-  label: string;
-  value: string;
-  full?: boolean;
-}) {
-  return (
-    <div className={`review-item ${full ? "full" : ""}`}>
-      <span>{label}</span>
-      <strong>{value || "Not provided"}</strong>
-    </div>
+    </main>
   );
 }

@@ -1,0 +1,1070 @@
+/* =========================================================
+   AGRIOPTIX — BUYER REQUIREMENT PAGE
+   RESPONSIVE LAPTOP + TABLET + MOBILE
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+.requirements-page {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      #e8faff 0,
+      #f5fbfc 35%,
+      #f7fafb 100%
+    );
+
+  color: #10234f;
+
+  padding: 24px;
+
+  display: flex;
+  justify-content: center;
+
+  box-sizing: border-box;
+}
+
+.requirements-container {
+  width: 100%;
+  max-width: 1120px;
+
+  margin: 0 auto;
+
+  background: #ffffff;
+
+  border-radius: 26px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 20px 60px rgba(16, 35, 79, 0.10);
+
+  align-self: flex-start;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.requirements-header {
+  min-height: 86px;
+
+  padding: 18px 32px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  background:
+    linear-gradient(
+      110deg,
+      #08a8a8,
+      #087fcf
+    );
+
+  color: white;
+}
+
+.back-button {
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  border: 1px solid rgba(255,255,255,0.35);
+
+  border-radius: 50%;
+
+  background: rgba(255,255,255,0.12);
+
+  color: white;
+
+  font-size: 25px;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.2s ease;
+}
+
+.back-button:hover {
+  background: rgba(255,255,255,0.22);
+
+  transform: translateX(-2px);
+}
+
+.requirements-brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-right: auto;
+}
+
+.requirements-logo {
+  width: 45px;
+  height: 45px;
+
+  border-radius: 50%;
+
+  background: rgba(255,255,255,0.16);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 25px;
+}
+
+.requirements-brand strong {
+  display: block;
+
+  font-size: 23px;
+
+  line-height: 1;
+}
+
+.requirements-brand small {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 10px;
+
+  opacity: 0.85;
+}
+
+.step-indicator {
+  padding: 8px 13px;
+
+  border: 1px solid rgba(255,255,255,0.28);
+
+  border-radius: 30px;
+
+  background: rgba(255,255,255,0.10);
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.requirements-title {
+  padding: 42px 48px 30px;
+}
+
+.requirements-title p {
+  margin: 0 0 9px;
+
+  color: #078b9b;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+.requirements-title h1 {
+  margin: 0;
+
+  color: #10234f;
+
+  font-size: clamp(30px, 4vw, 44px);
+
+  line-height: 1.1;
+
+  letter-spacing: -1.3px;
+}
+
+.requirements-title span {
+  display: block;
+
+  max-width: 680px;
+
+  margin-top: 12px;
+
+  color: #718096;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM CARD
+   ========================================================= */
+
+.requirement-card {
+  margin: 0 48px 40px;
+
+  padding: 32px;
+
+  border: 1px solid #dcecf1;
+
+  border-radius: 22px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 10px 30px rgba(16,35,79,0.05);
+}
+
+
+/* =========================================================
+   SECTION HEADING
+   ========================================================= */
+
+.form-section-heading {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 14px;
+
+  padding-bottom: 22px;
+
+  border-bottom: 1px solid #edf3f5;
+}
+
+.form-section-heading > span {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  border-radius: 11px;
+
+  background: #e1f8f2;
+
+  color: #00866d;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+.form-section-heading h2 {
+  margin: 0;
+
+  color: #172d57;
+
+  font-size: 20px;
+}
+
+.form-section-heading p {
+  margin: 5px 0 0;
+
+  color: #8290a5;
+
+  font-size: 12px;
+}
+
+.second-heading {
+  margin-top: 38px;
+}
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.requirement-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 22px;
+
+  margin-top: 25px;
+}
+
+.requirement-field {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.requirement-field.full-field {
+  grid-column: 1 / -1;
+}
+
+.requirement-field label {
+  margin-bottom: 8px;
+
+  color: #263b65;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.requirement-field label b {
+  color: #e44f4f;
+}
+
+.requirement-field label span {
+  margin-left: 7px;
+
+  color: #9aa5b5;
+
+  font-size: 10px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.requirement-field input,
+.requirement-field select,
+.requirement-field textarea {
+  width: 100%;
+
+  border: 1px solid #d7e6eb;
+
+  border-radius: 12px;
+
+  background: #fbfdfe;
+
+  color: #172d57;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.requirement-field input,
+.requirement-field select {
+  height: 50px;
+
+  padding: 0 14px;
+}
+
+.requirement-field textarea {
+  min-height: 110px;
+
+  padding: 13px 14px;
+
+  resize: vertical;
+
+  line-height: 1.5;
+}
+
+.requirement-field input::placeholder,
+.requirement-field textarea::placeholder {
+  color: #a5afbd;
+}
+
+.requirement-field input:focus,
+.requirement-field select:focus,
+.requirement-field textarea:focus {
+  border-color: #087fcf;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px rgba(8,127,207,0.10);
+}
+
+
+/* =========================================================
+   INPUT WITH UNIT
+   ========================================================= */
+
+.input-with-unit {
+  height: 50px;
+
+  display: flex;
+
+  align-items: center;
+
+  overflow: hidden;
+
+  border: 1px solid #d7e6eb;
+
+  border-radius: 12px;
+
+  background: #fbfdfe;
+
+  transition: 0.2s ease;
+}
+
+.input-with-unit:focus-within {
+  border-color: #087fcf;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px rgba(8,127,207,0.10);
+}
+
+.input-with-unit input {
+  height: 48px;
+
+  flex: 1;
+
+  min-width: 0;
+
+  border: none;
+
+  border-radius: 0;
+
+  background: transparent;
+
+  box-shadow: none;
+
+  padding: 0 12px;
+}
+
+.input-with-unit input:focus {
+  box-shadow: none;
+}
+
+.input-with-unit > span {
+  flex-shrink: 0;
+
+  padding: 0 13px;
+
+  color: #7e8b9f;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.input-with-unit .currency {
+  color: #087fcf;
+
+  font-size: 17px;
+
+  padding-right: 0;
+}
+
+
+/* =========================================================
+   NOTES
+   ========================================================= */
+
+.notes-field {
+  margin-top: 25px;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.requirement-error {
+  margin-top: 22px;
+
+  padding: 13px 15px;
+
+  border: 1px solid #f2caca;
+
+  border-radius: 12px;
+
+  background: #fff4f4;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  color: #a52b2b;
+}
+
+.requirement-error > span {
+  width: 24px;
+  height: 24px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #e05252;
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 800;
+}
+
+.requirement-error p {
+  margin: 0;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.requirement-summary {
+  margin-top: 28px;
+
+  padding: 18px;
+
+  border: 1px solid #dcecf1;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      120deg,
+      #f1fbfc,
+      #f8fcfd
+    );
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 15px;
+}
+
+.requirement-summary div {
+  min-width: 0;
+}
+
+.requirement-summary span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #7d899d;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.requirement-summary strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #172d57;
+
+  font-size: 13px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.requirement-actions {
+  margin-top: 28px;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+.cancel-button,
+.submit-requirement {
+  min-height: 52px;
+
+  padding: 0 22px;
+
+  border-radius: 12px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.cancel-button {
+  border: 1px solid #d7e6eb;
+
+  background: white;
+
+  color: #5e6d83;
+}
+
+.cancel-button:hover {
+  background: #f6fafb;
+}
+
+.submit-requirement {
+  min-width: 225px;
+
+  border: none;
+
+  background:
+    linear-gradient(
+      100deg,
+      #08a9dd,
+      #087fcf
+    );
+
+  color: white;
+
+  box-shadow:
+    0 10px 22px rgba(8,127,207,0.18);
+}
+
+.submit-requirement:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 28px rgba(8,127,207,0.25);
+}
+
+.submit-requirement:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+.submit-requirement span {
+  margin-left: 12px;
+
+  font-size: 19px;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.requirements-footer {
+  padding: 18px 48px;
+
+  border-top: 1px solid #edf3f5;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  color: #8793a6;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .requirements-page {
+    padding: 15px;
+  }
+
+  .requirements-title {
+    padding: 32px 30px 24px;
+  }
+
+  .requirement-card {
+    margin-left: 30px;
+    margin-right: 30px;
+
+    padding: 25px;
+  }
+
+  .requirements-footer {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .requirement-summary {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .requirements-page {
+    padding: 0;
+
+    background: #f7fafb;
+  }
+
+  .requirements-container {
+    min-height: 100vh;
+
+    border-radius: 0;
+
+    box-shadow: none;
+  }
+
+
+  /* HEADER */
+
+  .requirements-header {
+    min-height: 72px;
+
+    padding: 14px 16px;
+  }
+
+  .back-button {
+    width: 39px;
+    height: 39px;
+
+    font-size: 22px;
+  }
+
+  .requirements-logo {
+    width: 39px;
+    height: 39px;
+
+    font-size: 21px;
+  }
+
+  .requirements-brand strong {
+    font-size: 19px;
+  }
+
+  .requirements-brand small {
+    font-size: 8px;
+  }
+
+  .step-indicator {
+    padding: 7px 9px;
+
+    font-size: 8px;
+
+    letter-spacing: 0.8px;
+  }
+
+
+  /* TITLE */
+
+  .requirements-title {
+    padding: 28px 17px 20px;
+  }
+
+  .requirements-title p {
+    font-size: 9px;
+
+    letter-spacing: 1.5px;
+  }
+
+  .requirements-title h1 {
+    font-size: 29px;
+
+    letter-spacing: -0.8px;
+  }
+
+  .requirements-title span {
+    margin-top: 9px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+  }
+
+
+  /* CARD */
+
+  .requirement-card {
+    margin: 0 12px 25px;
+
+    padding: 18px;
+
+    border-radius: 17px;
+  }
+
+
+  /* HEADINGS */
+
+  .form-section-heading {
+    gap: 10px;
+
+    padding-bottom: 17px;
+  }
+
+  .form-section-heading > span {
+    width: 31px;
+    height: 31px;
+
+    border-radius: 9px;
+
+    font-size: 10px;
+  }
+
+  .form-section-heading h2 {
+    font-size: 16px;
+  }
+
+  .form-section-heading p {
+    font-size: 10px;
+
+    line-height: 1.4;
+  }
+
+  .second-heading {
+    margin-top: 27px;
+  }
+
+
+  /* FORM */
+
+  .requirement-grid {
+    grid-template-columns: 1fr;
+
+    gap: 17px;
+
+    margin-top: 19px;
+  }
+
+  .requirement-field.full-field {
+    grid-column: auto;
+  }
+
+  .requirement-field label {
+    margin-bottom: 6px;
+
+    font-size: 11px;
+  }
+
+  .requirement-field input,
+  .requirement-field select {
+    height: 47px;
+
+    font-size: 12px;
+  }
+
+  .requirement-field textarea {
+    min-height: 100px;
+
+    font-size: 12px;
+  }
+
+  .input-with-unit {
+    height: 47px;
+  }
+
+  .input-with-unit input {
+    height: 45px;
+  }
+
+
+  /* SUMMARY */
+
+  .requirement-summary {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 10px;
+
+    padding: 13px;
+
+    border-radius: 12px;
+  }
+
+  .requirement-summary span {
+    font-size: 7px;
+  }
+
+  .requirement-summary strong {
+    font-size: 11px;
+  }
+
+
+  /* ACTIONS */
+
+  .requirement-actions {
+    margin-top: 20px;
+
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+  .cancel-button,
+  .submit-requirement {
+    width: 100%;
+
+    min-height: 50px;
+  }
+
+  .submit-requirement {
+    min-width: 0;
+  }
+
+
+  /* FOOTER */
+
+  .requirements-footer {
+    padding: 16px;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    gap: 5px;
+
+    font-size: 8px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .requirements-title h1 {
+    font-size: 25px;
+  }
+
+  .requirement-card {
+    margin-left: 8px;
+    margin-right: 8px;
+
+    padding: 15px;
+  }
+
+  .step-indicator {
+    display: none;
+  }
+
+}
+/* =========================================================
+   FINAL VIEWPORT POSITION FIX
+   Buyer Requirements
+   ========================================================= */
+
+html,
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  min-width: 100% !important;
+}
+
+.requirements-page {
+  position: fixed !important;
+
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+
+  width: 100vw !important;
+  height: 100vh !important;
+
+  margin: 0 !important;
+  padding: 24px !important;
+
+  transform: none !important;
+
+  display: flex !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+
+  box-sizing: border-box !important;
+
+  z-index: 999 !important;
+}
+
+.requirements-container {
+  position: relative !important;
+
+  width: 100% !important;
+  max-width: 1120px !important;
+
+  margin: 0 auto !important;
+
+  left: auto !important;
+  right: auto !important;
+
+  transform: none !important;
+
+  box-sizing: border-box !important;
+}
