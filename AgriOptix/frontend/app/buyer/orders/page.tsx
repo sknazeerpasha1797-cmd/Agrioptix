@@ -179,6 +179,11 @@ export default function OrdersPage() {
     setContactOpen((current) => !current);
   };
 
+  // NEW: Open Delivery Inspection
+  const handleDeliveryInspection = () => {
+    router.push("/buyer/delivery-inspection");
+  };
+
   return (
     <main className={styles.page}>
       <div className={styles.container}>
@@ -577,6 +582,75 @@ export default function OrdersPage() {
           </section>
 
         </div>
+
+        {/* DELIVERY INSPECTION ACTION */}
+        <section
+          style={{
+            marginTop: "24px",
+            padding: "24px",
+            borderRadius: "18px",
+            background: "linear-gradient(135deg, #eef9ff 0%, #ffffff 100%)",
+            border: "1px solid #d7eaf5",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "20px",
+            flexWrap: "wrap",
+          }}
+        >
+          <div>
+            <p
+              style={{
+                margin: 0,
+                fontSize: "12px",
+                fontWeight: 700,
+                letterSpacing: "1px",
+                color: "#168acb",
+              }}
+            >
+              DELIVERY ARRIVED?
+            </p>
+
+            <h3
+              style={{
+                margin: "7px 0 5px",
+                fontSize: "20px",
+                color: "#16324f",
+              }}
+            >
+              Inspect your produce before payment
+            </h3>
+
+            <p
+              style={{
+                margin: 0,
+                fontSize: "14px",
+                color: "#667788",
+              }}
+            >
+              Verify quantity, quality and freshness before confirming the delivery.
+            </p>
+          </div>
+
+          <button
+            onClick={handleDeliveryInspection}
+            type="button"
+            style={{
+              border: "none",
+              borderRadius: "12px",
+              padding: "14px 22px",
+              background: "#079bd3",
+              color: "#ffffff",
+              fontSize: "14px",
+              fontWeight: 700,
+              cursor: "pointer",
+              boxShadow: "0 8px 20px rgba(7, 155, 211, 0.20)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Proceed to Delivery Inspection →
+          </button>
+        </section>
 
         {/* LIVE UPDATE */}
         <div className={styles.updateBar}>
