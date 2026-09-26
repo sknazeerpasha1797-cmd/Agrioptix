@@ -1,3 +1,30 @@
 fastapi==0.116.1
 uvicorn[standard]==0.35.0
 pydantic==2.11.7
+
+# AI Quality Assessment
+torch
+torchvision
+ultralytics
+opencv-python
+
+# Shelf-life / Value-loss Prediction
+xgboost
+lightgbm
+
+# DBSCAN
+scikit-learn
+
+# PostgreSQL + PostGIS
+psycopg[binary]
+geoalchemy2
+shapely
+
+# Route + Delivery Optimization
+ortools
+
+# Voice
+openai-whisper
+
+# API communication: OSRM / Bhashini
+httpx

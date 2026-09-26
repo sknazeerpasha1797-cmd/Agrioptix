@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Bot, ChevronRight, UserRound } from "lucide-react";
-import StepShell from "../../../components/StepShell";
-import { api } from "../../../lib/store";
+import StepShell from "@/components/StepShell";
+import { api } from "@/lib/store";
 
 type Harvest = {
   id: number;

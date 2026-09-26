@@ -33,10 +33,12 @@ export default function MarketIntelligence() {
   const prices = buyers.map((b) => Number(b.price)).filter((p) => Number.isFinite(p));
   const min = prices.length ? Math.min(...prices) : 24;
   const max = prices.length ? Math.max(...prices) : 28;
-  const changePct = wf.market?.changePct ?? 2;
-  const updated = wf.market?.updated || "Today";
-  const marketName = wf.market?.location || wf.harvest?.market || "Nizamabad";
-  const trendLabel = wf.market?.trend || "Stable trend";
+  const market = (wf as any).market;
+
+const changePct = market?.changePct ?? 2;
+const updated = market?.updated || "Today";
+const marketName = market?.location || wf.harvest?.market || "Nizamabad";
+const trendLabel = market?.trend || "Stable trend";
 
   return (
     <div className="market-page">
